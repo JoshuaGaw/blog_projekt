@@ -35,6 +35,16 @@ body.dark-mode {
     color: var(--white-text-color);
 }
 
+body.dark-mode .card1 {
+    background-color: var(--secundary-bg-dark-mode);
+    color: var(--white-text-color);
+}
+
+body.dark-mode .hero-card {
+    background-color: var(--secundary-bg-dark-mode);
+    color: var(--white-text-color);
+}
+
 /* Header CSS */
 
 header {
@@ -64,6 +74,21 @@ header {
     font-family: Verdana, sans-serif;
 }
 
+.darkmode-toggle {}
+
+#new-post-button {
+    background: none;
+    color: white;
+    border: white 1px solid;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    font-size: 17px;
+    font-family: Verdana, sans-serif;
+}
+
+#new-post-button:hover {}
+
 .toggle-spacer {
     flex-grow: 1;
 }
@@ -80,15 +105,24 @@ header {
 }
 
 .top-spacer {
-    height: 20px;
+    height: 100px;
     width: 100%;
+}
+
+.header-content-spacer {
+    height: 40px;
+    width: 100%;
+}
+
+.entry-toggle-spacer {
+    width: 40px;
 }
 
 /* Normale Karte CSS */
 
 .card1 {
     transition: background-color 0.4s ease, color 0.4s ease;
-    width: 250px;
+    width: 400px;
     height: 250px;
     background-color: var(--secundary-bg-white-color);
     box-shadow: rgba(0, 0, 0, 0.35) 0 5px 15px;
@@ -114,13 +148,12 @@ header {
 }
 
 .hero-card {
-    width: 600px;
+    width: 1000px;
     height: 450px;
     background-color: var(--secundary-bg-white-color);
     box-shadow: rgba(0, 0, 0, 0.35) 0 5px 15px;
+    transition: background-color 0.4s ease, color 0.4s ease;
 }
-
-.darkmode-toggle {}
 
 
 /* Pop-Up CSS */
