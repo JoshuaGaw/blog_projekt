@@ -12,13 +12,38 @@
             KÖLN ESSENMEILE
         </div>
         <div class="toggle-spacer"></div>
+        <button id="new-post-button">Neuer Eintrag</button>
         <button id="theme-toggle" class="darkmode-toggle">Toggle Mode</button>
     </div>
 </header>
+
+
+
+
+
+
+
+
+<div id="new-post-container" class="display-none pop-up">
+    <div class="form-container card1 squircle-corners">
+        <input type="text" id="new-post-title" placeholder="Titel">
+        <textarea id="new-post-content" placeholder="Inhalt"></textarea>
+        <button id="new-post-submit">Speichern</button>
+    </div>
+</div>
+
+
+
+
+
+
+
+
 <main>
+    <div id="hero-container"></div>
     <div class="main-content">
         <div class="top-spacer"></div>
-        <div id="card1" class="round-corners card1"></div>
+        <div id="posts-container"></div>
     </div>
 </main>
 </body>

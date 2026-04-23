@@ -1,19 +1,21 @@
 :root {
     --main-red-color: #b91c1c;
+
+    /* Light Mode */
     --bg-white-color: #fff8f6;
     --secundary-bg-white-color: #f5edeb;
+    --black-text-color: #1f2937;
+    --secundary-black-text-color: #6b7280;
+
+    /* Dark Mode */
+    --bg-dark-mode: #1F1F1E;
+    --secundary-bg-dark-mode: #2C2C2B;
+    --white-text-color: #f9fafb;
+
+    /* Weitere Farben */
     --orange-color: #d97706;
     --brown-red-hover-color: #7c2d12;
     --green-color: #3A7D44;
-    --black-text-color: #1f2937;
-    --secundary-black-text-color: #6b7280;
-    --white-text-color: #f9fafb;
-    --bg-dark-mode: #1F1F1E;
-    --secundary-bg-dark-mode: #2C2C2B;
-    /*
-    --ueberschrift-size: 40px;
-    --
-     */
 }
 
 * {
@@ -28,7 +30,7 @@ body {
 
 body.dark-mode {
     background-color: var(--bg-dark-mode);
-    color: white;
+    color: var(--white-text-color);
 }
 
 header {
@@ -55,7 +57,7 @@ header {
 .headername {
     color: white;
     font-size: 23px;
-    font-family: Verdana;
+    font-family: Verdana, sans-serif;
 }
 
 .toggle-spacer {
@@ -77,23 +79,47 @@ header {
 
 .card1 {
     transition: background-color 0.4s ease, color 0.4s ease;
-    width: 1000px;
-    height: 1000px;
+    width: 250px;
+    height: 250px;
     background-color: var(--secundary-bg-white-color);
-    box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+    box-shadow: rgba(0, 0, 0, 0.35) 0 5px 15px;
 }
 
 .card1.dark-mode {
     background-color: var(--secundary-bg-dark-mode);
 }
 
-.round-corners {
+.hero-card {
+
+}
+
+.squircle-corners {
     corner-shape: squircle;
     border-radius: 10%;
 }
 
 .darkmode-toggle {
-    /*dasdsads
+}
 
-     */
+.display-none {
+    display: none;
+}
+
+.display-flex {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+
+.pop-up {
+    width: 100%;
+    position: fixed;
+}
+
+.form-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
 }
