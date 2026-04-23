@@ -1,3 +1,5 @@
+/* Universal CSS */
+
 :root {
     --main-red-color: #b91c1c;
 
@@ -33,6 +35,8 @@ body.dark-mode {
     color: var(--white-text-color);
 }
 
+/* Header CSS */
+
 header {
     display: block;
     unicode-bidi: isolate;
@@ -64,6 +68,8 @@ header {
     flex-grow: 1;
 }
 
+/* Main Content CSS */
+
 .main-content {
     display: flex;
     justify-content: center;
@@ -73,10 +79,12 @@ header {
     height: 100%;
 }
 
-/*.top-spacer {*/
-/*    height: 20px;*/
-/*    width: 100%;*/
-/*}*/
+.top-spacer {
+    height: 20px;
+    width: 100%;
+}
+
+/* Normale Karte CSS */
 
 .card1 {
     transition: background-color 0.4s ease, color 0.4s ease;
@@ -90,6 +98,13 @@ header {
     background-color: var(--secundary-bg-dark-mode);
 }
 
+#posts-container {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 20px;
+}
+
+/* Hero Karte CSS */
 
 .hero-container {
     display: flex;
@@ -105,24 +120,10 @@ header {
     box-shadow: rgba(0, 0, 0, 0.35) 0 5px 15px;
 }
 
-.squircle-corners {
-    corner-shape: squircle;
-    border-radius: 10%;
-}
+.darkmode-toggle {}
 
-.darkmode-toggle {
-}
 
-.display-none {
-    display: none;
-}
-
-.display-flex {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-}
-
+/* Pop-Up CSS */
 
 .pop-up {
     width: 100%;
@@ -134,4 +135,22 @@ header {
     flex-direction: column;
     align-items: center;
     justify-content: center;
+}
+
+
+/* All-Use CSS */
+
+.squircle-corners {
+    corner-shape: squircle;
+    border-radius: 10%;
+}
+
+.display-none {
+    display: none;
+}
+
+.display-flex {
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
