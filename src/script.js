@@ -33,7 +33,7 @@ toggleButton.addEventListener('click', () => {
 
 // Karten Funktionen
 
-// Karten aus der DB holen
+// Karten aus der DB holen, Karten erstellen, Kartendetails anzeigen
 
 const url = "http://localhost/BlogProjekt/src/posts.php";
 const postsContainer = document.getElementById('posts-container');
@@ -49,25 +49,45 @@ function getCards() {
             const card = document.createElement('div');
             card.classList.add('hero-card');
             card.classList.add('squircle-corners');
+            card.setAttribute('data-id', firstElement.id);
             card.innerHTML = `
+                <div class="hero-image"></div>
+                <div class="hero-body">
                 <h2>${firstElement.title}</h2>
                 <!-- Anstelle von Content Kurzbeschreibung hinzufügen -->
                 <p>${firstElement.content}</p>
+                </div>
             `;
             heroContainer.appendChild(card);
+            card.addEventListener('click', () => {
+                window.location.href = `post.php?id=${firstElement.id}`;
+            });
 
             data.slice(1).forEach(post => {
                 const card = document.createElement('div');
                 card.classList.add('card1');
-                card.classList.add('squircle-corners')
+                card.classList.add('squircle-corners');
+                card.setAttribute('data-id', post.id);
                 card.innerHTML = `
+            <div class="card-image"></div>
+            <div class="card-body">
             <h2>${post.title}</h2>
             <p>${post.content}</p>
+            </div>
         `;
                 postsContainer.appendChild(card);
             })
+
+            const cards = document.querySelectorAll('.card1');
+            cards.forEach(card => {
+                card.addEventListener('click', () => {
+                    const postId = card.getAttribute('data-id');
+                    window.location.href = `post.php?id=${postId}`;
+                });
+            });
         });
 }
+
 
 // Pop-up-Funktionen
 
@@ -96,9 +116,9 @@ saveButton.addEventListener('click', () => {
         method: 'POST',
         body: formData
     })
-    .then(response => response.json())
-    .then(() => {
-        popup.classList.remove('display-flex');
-        getCards();
-    })
+        .then(response => response.json())
+        .then(() => {
+            popup.classList.remove('display-flex');
+            getCards();
+        })
 })
