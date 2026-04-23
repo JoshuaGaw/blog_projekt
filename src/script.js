@@ -1,3 +1,11 @@
+// Funktionen, die beim Aufruf des Browsers sofort ausgeführt werden sollen
+
+document.addEventListener('DOMContentLoaded', () => {
+    // Wird ausgeführt, sobald das HTML fertig geladen ist
+    getCards();
+});
+
+
 // Dark Mode
 
 const toggleButton = document.getElementById('theme-toggle');
@@ -40,10 +48,14 @@ function getCards() {
             const firstElement = data[0];
             const card = document.createElement('div');
             card.classList.add('hero-card');
-            heroContainer.innerHTML = `
+            card.classList.add('squircle-corners');
+            card.innerHTML = `
                 <h2>${firstElement.title}</h2>
+                <!-- Anstelle von Content Kurzbeschreibung hinzufügen -->
                 <p>${firstElement.content}</p>
             `;
+            heroContainer.appendChild(card);
+
             data.slice(1).forEach(post => {
                 const card = document.createElement('div');
                 card.classList.add('card1');
@@ -57,7 +69,7 @@ function getCards() {
         });
 }
 
-// Popup Funktionen
+// Pop-up-Funktionen
 
 // Popup anzeigen
 
