@@ -48,7 +48,6 @@ function getCards() {
             const firstElement = data[0];
             const card = document.createElement('div');
             card.classList.add('hero-card');
-            card.classList.add('squircle-corners');
             card.setAttribute('data-id', firstElement.id);
             card.innerHTML = `
                 <div class="hero-image"></div>

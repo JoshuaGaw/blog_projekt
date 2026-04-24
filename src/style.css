@@ -18,6 +18,9 @@
     --orange-color: #d97706;
     --brown-red-hover-color: #7c2d12;
     --green-color: #3A7D44;
+
+    --detail-font-size-title: 2.75rem;
+    --detail-font-size-content: 1.25rem;
 }
 
 * {
@@ -59,7 +62,9 @@ header {
     width: 100%;
     background-color: var(--main-red-color);
     height: 80px;
-    position: sticky;
+    /*position: fixed;*/
+    /*top: 0;*/
+    /*z-index: 1;*/
 }
 
 .header-content {
@@ -156,8 +161,8 @@ header {
 
 #posts-container {
     display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 20px;
+    grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+    grid-gap: 20px;
 }
 
 /* Hero Karte CSS */
@@ -173,6 +178,7 @@ header {
     display: flex;
     width: 1000px;
     height: 450px;
+    border-radius: 20px;
     background-color: var(--secundary-bg-white-color);
     box-shadow: rgba(0, 0, 0, 0.35) 0 5px 15px;
     transition: background-color 0.4s ease, color 0.4s ease;
@@ -213,6 +219,80 @@ header {
     justify-content: center;
 }
 
+.pop-up-card {
+    transition: background-color 0.4s ease, color 0.4s ease;
+    width: 400px;
+    height: 350px;
+    background-color: var(--secundary-bg-white-color);
+    box-shadow: rgba(0, 0, 0, 0.35) 0 5px 15px;
+    overflow: hidden;
+}
+
+
+/* Detail CSS */
+
+.detail-main-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+}
+
+.detail-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    background-color: var(--secundary-bg-white-color);
+    width: 70%;
+    border-radius: 20px;
+    box-shadow: rgba(0, 0, 0, 0.35) 0 5px 15px;
+    margin-top: 40px;
+    padding: 15px;
+    transition: background-color 0.4s ease, color 0.4s ease;
+}
+
+.detail-title {
+    font-size: var(--detail-font-size-title);
+    font-weight: bold;
+    font-family: "Times New Roman", sans-serif;
+    margin: 0;
+    width: 83.333333%;
+}
+
+.detail-content {
+    font-size: var(--detail-font-size-content);
+    font-family: sans-serif;
+    margin: 20px 0 0;
+    width: 83.333333%;
+    line-height: 1.3;
+}
+
+.detail-card-footer {
+    position: sticky;
+    bottom: 0;
+    width: 100%;
+    background-color: color-mix(in srgb, var(--secundary-bg-white-color) 30%, transparent);
+    padding: 10px;
+    display: flex;
+    justify-content: end;
+    align-items: center;
+    gap: 10px;
+    backdrop-filter: blur(10px);
+}
+
+.button {
+    background-color: var(--main-red-color);
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    font-size: 16px;
+    font-family: Verdana, sans-serif;
+}
 
 /* All-Use CSS */
 
