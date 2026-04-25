@@ -229,6 +229,13 @@ header {
     overflow: hidden;
 }
 
+.new-post-header-title {
+    font-size: 1.2rem;
+    font-weight: bold;
+    font-family: Veradana, sans-serif;
+    top: 0;
+}
+
 
 /* Detail CSS */
 

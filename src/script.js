@@ -106,7 +106,7 @@ openPopupButton.addEventListener('click', () => {
     popup.classList.add('display-flex');
 });
 
-// Eintrag speichern
+// Pop-up-Eintrag speichern
 
 const saveButton = document.getElementById('new-post-submit');
 
@@ -128,4 +128,16 @@ saveButton.addEventListener('click', () => {
             popup.classList.remove('display-flex');
             getCards();
         })
+})
+
+// Pop-up-Abbrechen
+const cancelButton = document.getElementById('new-post-cancel');
+const titelInput = document.getElementById('new-post-title');
+const descriptionInput = document.getElementById('new-post-description');
+const contentInput = document.getElementById('new-post-content');
+cancelButton.addEventListener('click', () => {
+    titelInput.value = '';
+    descriptionInput.value = '';
+    contentInput.value = '';
+    popup.classList.remove('display-flex');
 })

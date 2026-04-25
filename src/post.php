@@ -33,6 +33,7 @@ $post = mysqli_fetch_assoc($result);
         <textarea id="detail-edit-description" placeholder="Beschreibung"><?php echo $post['description']; ?></textarea>
         <textarea id="detail-edit-content" placeholder="Inhalt"><?php echo $post['content']; ?></textarea>
         <button id="detail-edit-submit" data-id="<?php echo $post['id']; ?>">Speichern</button>
+        <button id="new-post-cancel">Abbrechen</button>
     </div>
 </div>
 

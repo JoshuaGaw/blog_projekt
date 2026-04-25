@@ -60,3 +60,9 @@ saveButton.addEventListener('click', () => {
             location.reload();
         })
 })
+
+// Abbrechen
+const cancelButton = document.getElementById('new-post-cancel');
+cancelButton.addEventListener('click', () => {
+    popup.classList.remove('display-flex');
+})
