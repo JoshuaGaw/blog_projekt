@@ -1,5 +1,23 @@
 const url = "http://localhost/BlogProjekt/src/posts.php";
 
+const toggleButton = document.getElementById('theme-toggle');
+const body = document.body;
+
+// Schauen, was der User für ein Theme gespeichert hat
+if (localStorage.getItem('theme') === 'dark') {
+    body.classList.add('dark-mode');
+}
+
+toggleButton.addEventListener('click', () => {
+    body.classList.toggle('dark-mode');
+
+    // Save preference
+    if (body.classList.contains('dark-mode')) {
+        localStorage.setItem('theme', 'dark');
+    } else {
+        localStorage.setItem('theme', 'light');
+    }
+});
 
 // Header Funktionen
 

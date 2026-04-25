@@ -7,20 +7,16 @@ document.addEventListener('DOMContentLoaded', () => {
 
 
 // Dark Mode
-
 const toggleButton = document.getElementById('theme-toggle');
 const body = document.body;
-const card1 = document.getElementById('card1');
 
 // Schauen, was der User für ein Theme gespeichert hat
 if (localStorage.getItem('theme') === 'dark') {
     body.classList.add('dark-mode');
-    card1.classList.add('dark-mode');
 }
 
 toggleButton.addEventListener('click', () => {
     body.classList.toggle('dark-mode');
-    card1.classList.toggle('dark-mode');
 
     // Save preference
     if (body.classList.contains('dark-mode')) {

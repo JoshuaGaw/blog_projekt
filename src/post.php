@@ -28,12 +28,28 @@ $post = mysqli_fetch_assoc($result);
 </header>
 
 <div id="detail-edit-container" class="display-none pop-up">
-    <div class="form-container pop-up-card squircle-corners">
-        <label class="label" for="detail-edit-title">Titel</label><input type="text" id="detail-edit-title" placeholder="Titel" value="<?php echo $post['title']; ?>">
-        <label class="label" for="detail-edit-description">Beschreibung</label><textarea id="detail-edit-description" placeholder="Beschreibung"><?php echo $post['description']; ?></textarea>
-        <label class="label" for="detail-edit-content">Inhalt</label><textarea id="detail-edit-content" placeholder="Inhalt"><?php echo $post['content']; ?></textarea>
-        <button id="new-post-cancel">Abbrechen</button>
-        <button id="detail-edit-submit" data-id="<?php echo $post['id']; ?>">Speichern</button>
+    <div class="pop-up-card">
+        <div class="new-post-header">
+            <div class="new-post-header-title">Post bearbeiten</div>
+        </div>
+        <div class="pop-up-content">
+            <div class="display-flex-column padding-10">
+                <label class="label" for="detail-edit-title">Titel</label>
+                <input type="text" id="detail-edit-title" class="input-field height-30" placeholder="Titel" value="<?php echo $post['title']; ?>">
+            </div>
+            <div class="display-flex-column padding-10">
+                <label class="label" for="detail-edit-description">Beschreibung</label>
+                <textarea id="detail-edit-description" class="input-field height-80" placeholder="Beschreibung"><?php echo $post['description']; ?></textarea>
+            </div>
+            <div class="display-flex-column padding-10">
+                <label class="label" for="detail-edit-content">Inhalt</label>
+                <textarea id="detail-edit-content" class="input-field height-200" placeholder="Inhalt"><?php echo $post['content']; ?></textarea>
+            </div>
+        </div>
+        <div class="pop-up-footer">
+            <button id="new-post-cancel" class="button">Abbrechen</button>
+            <button id="detail-edit-submit" class="button" data-id="<?php echo $post['id']; ?>">Speichern</button>
+        </div>
     </div>
 </div>
 
