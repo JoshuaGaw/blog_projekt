@@ -31,6 +31,14 @@ toggleButton.addEventListener('click', () => {
 });
 
 
+// Header Funktionen
+
+// Klick auf Titel der Seite -> Main-Page
+const pageTitle = document.getElementById('headername');
+pageTitle.addEventListener('click', () => {
+    window.location.href = 'index.html';
+});
+
 // Karten Funktionen
 
 // Karten aus der DB holen, Karten erstellen, Kartendetails anzeigen

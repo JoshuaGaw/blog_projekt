@@ -1,5 +1,15 @@
 const url = "http://localhost/BlogProjekt/src/posts.php";
 
+
+// Header Funktionen
+
+// Klick auf Titel der Seite -> Main-Page
+const pageTitle = document.getElementById('headername');
+pageTitle.addEventListener('click', () => {
+    window.location.href = 'index.html';
+});
+
+
 // Detailseite Funktionen
 
 // Löschen + Redirect auf Main-Page

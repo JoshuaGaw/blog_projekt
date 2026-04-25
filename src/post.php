@@ -19,7 +19,7 @@ $post = mysqli_fetch_assoc($result);
 <body>
 <header class="header">
     <div class="header-content">
-        <div class="headername">
+        <div id="headername" class="headername">
             KÖLN ESSENMEILE
         </div>
         <div class="toggle-spacer"></div>
