@@ -29,11 +29,11 @@ $post = mysqli_fetch_assoc($result);
 
 <div id="detail-edit-container" class="display-none pop-up">
     <div class="form-container pop-up-card squircle-corners">
-        <input type="text" id="detail-edit-title" placeholder="Titel" value="<?php echo $post['title']; ?>">
-        <textarea id="detail-edit-description" placeholder="Beschreibung"><?php echo $post['description']; ?></textarea>
-        <textarea id="detail-edit-content" placeholder="Inhalt"><?php echo $post['content']; ?></textarea>
-        <button id="detail-edit-submit" data-id="<?php echo $post['id']; ?>">Speichern</button>
+        <label class="label" for="detail-edit-title">Titel</label><input type="text" id="detail-edit-title" placeholder="Titel" value="<?php echo $post['title']; ?>">
+        <label class="label" for="detail-edit-description">Beschreibung</label><textarea id="detail-edit-description" placeholder="Beschreibung"><?php echo $post['description']; ?></textarea>
+        <label class="label" for="detail-edit-content">Inhalt</label><textarea id="detail-edit-content" placeholder="Inhalt"><?php echo $post['content']; ?></textarea>
         <button id="new-post-cancel">Abbrechen</button>
+        <button id="detail-edit-submit" data-id="<?php echo $post['id']; ?>">Speichern</button>
     </div>
 </div>
 

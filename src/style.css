@@ -236,6 +236,11 @@ header {
     top: 0;
 }
 
+.label {
+    font-size: .8rem;
+    font-family: sans-serif;
+}
+
 
 /* Detail CSS */
 
