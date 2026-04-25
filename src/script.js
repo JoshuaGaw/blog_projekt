@@ -104,7 +104,6 @@ openPopupButton.addEventListener('click', () => {
 const saveButton = document.getElementById('new-post-submit');
 
 saveButton.addEventListener('click', () => {
-    console.log('Speichern gedrückt')
     const title = document.getElementById('new-post-title').value;
     const content = document.getElementById('new-post-content').value;
     const formData = new FormData();
