@@ -53,8 +53,7 @@ function getCards() {
                 <div class="hero-image"></div>
                 <div class="hero-body">
                 <h2>${firstElement.title}</h2>
-                <!-- Anstelle von Content Kurzbeschreibung hinzufügen -->
-                <p>${firstElement.content}</p>
+                <p>${firstElement.description}</p>
                 </div>
             `;
             heroContainer.appendChild(card);
@@ -71,7 +70,7 @@ function getCards() {
             <div class="card-image"></div>
             <div class="card-body">
             <h2>${post.title}</h2>
-            <p>${post.content}</p>
+            <p>${post.description}</p>
             </div>
         `;
                 postsContainer.appendChild(card);
@@ -105,9 +104,11 @@ const saveButton = document.getElementById('new-post-submit');
 
 saveButton.addEventListener('click', () => {
     const title = document.getElementById('new-post-title').value;
+    const description = document.getElementById('new-post-description').value;
     const content = document.getElementById('new-post-content').value;
     const formData = new FormData();
     formData.append('title', title);
+    formData.append('description', description)
     formData.append('content', content);
 
     fetch(url, {

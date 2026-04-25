@@ -62,9 +62,8 @@ header {
     width: 100%;
     background-color: var(--main-red-color);
     height: 80px;
-    /*position: fixed;*/
-    /*top: 0;*/
-    /*z-index: 1;*/
+    position: sticky;
+    top: 0;
 }
 
 .header-content {
@@ -210,6 +209,7 @@ header {
 .pop-up {
     width: 100%;
     position: fixed;
+    z-index: 1;
 }
 
 .form-container {

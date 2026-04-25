@@ -36,12 +36,13 @@ const saveButton = document.getElementById('detail-edit-submit');
 
 saveButton.addEventListener('click', () => {
     const title = document.getElementById('detail-edit-title').value;
+    const description = document.getElementById('detail-edit-description').value;
     const content = document.getElementById('detail-edit-content').value;
     const postId = saveButton.getAttribute('data-id');
 
     fetch(url, {
         method: 'PUT',
-        body: new URLSearchParams({id: postId, title: title, content: content})
+        body: new URLSearchParams({id: postId, title: title, description: description, content: content})
     })
         .then(response => response.json())
         .then(() => {

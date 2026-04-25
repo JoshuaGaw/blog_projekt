@@ -17,9 +17,10 @@ if ($method === 'GET') {
 
 } elseif ($method === 'POST') {
     $title = $_POST['title'];
+    $description = $_POST['description'];
     $content = $_POST['content'];
-    $stmt = mysqli_prepare($conn, "INSERT INTO posts (user_id, title, content, status, created_at, updated_at) VALUES (1, ?, ?, 'published', NOW(), NOW())");
-    mysqli_stmt_bind_param($stmt, "ss", $title, $content);
+    $stmt = mysqli_prepare($conn, "INSERT INTO posts (user_id, title, description, content, status, created_at, updated_at) VALUES (1, ?, ?, ?, 'published', NOW(), NOW())");
+    mysqli_stmt_bind_param($stmt, "sss", $title, $description, $content);
     if (mysqli_stmt_execute($stmt)) {
         echo json_encode(["success" => true]);
     } else {
@@ -30,9 +31,10 @@ if ($method === 'GET') {
     parse_str(file_get_contents("php://input"), $data);
     $id = $data['id'];
     $title = $data['title'];
+    $description = $data['description'];
     $content = $data['content'];
-    $stmt = mysqli_prepare($conn, "UPDATE posts SET title = ?, content = ?, updated_at = NOW() WHERE id = ?");
-    mysqli_stmt_bind_param($stmt, "ssi", $title, $content, $id);
+    $stmt = mysqli_prepare($conn, "UPDATE posts SET title = ?, description = ?, content = ?, updated_at = NOW() WHERE id = ?");
+    mysqli_stmt_bind_param($stmt, "sssi", $title, $description, $content, $id);
     if (mysqli_stmt_execute($stmt)) {
         echo json_encode(["success" => true]);
     } else {
