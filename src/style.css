@@ -166,7 +166,6 @@ header {
 
 .card1 {
     transition: background-color 0.4s ease, color 0.4s ease;
-    width: 400px;
     height: 350px;
     background-color: var(--secundary-bg-white-color);
     box-shadow: rgba(0, 0, 0, 0.35) 0 5px 15px;
@@ -201,9 +200,14 @@ header {
     color: var(--secundary-black-text-color);
 }
 
+.grid-container {
+    width: 85%;
+}
+
 #posts-container {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+    grid-template-columns: repeat(auto-fit, minmax(400px, 400px));
+    width: 100%;
     grid-gap: 20px;
 }
 
