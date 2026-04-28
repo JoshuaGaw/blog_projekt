@@ -206,9 +206,10 @@ header {
 
 #posts-container {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(400px, 400px));
+    grid-template-columns: repeat(auto-fit, minmax(400px, 415px));
     width: 100%;
     grid-gap: 20px;
+    cursor: pointer;
 }
 
 /* Hero Karte CSS */
@@ -218,6 +219,7 @@ header {
     justify-content: center;
     align-items: center;
     width: 100%;
+    cursor: pointer;
 }
 
 .hero-card {
