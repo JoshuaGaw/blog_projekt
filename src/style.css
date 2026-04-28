@@ -386,6 +386,7 @@ header {
     color: white;
     border: none;
     padding: 10px 20px;
+    margin: 0 5px;
     border-radius: 5px;
     cursor: pointer;
     transition: background-color 0.4s ease, color 0.4s ease;
