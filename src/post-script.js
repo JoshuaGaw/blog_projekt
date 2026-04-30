@@ -24,7 +24,7 @@ toggleButton.addEventListener('click', () => {
 // Klick auf Titel der Seite -> Main-Page
 const pageTitle = document.getElementById('headername');
 pageTitle.addEventListener('click', () => {
-    window.location.href = 'index.html';
+    globalThis.location.href = 'index.html';
 });
 
 
@@ -36,14 +36,14 @@ const deleteButton = document.getElementById('detail-delete-button');
 
 deleteButton.addEventListener('click', () => {
     console.log("delete clicked")
-    const postId = deleteButton.getAttribute('data-id');
+    const postId = deleteButton.dataset.id;
     fetch(url, {
         method: 'DELETE',
         body: `id=${postId}`
     })
         .then(response => response.json())
         .then(() => {
-            window.location.href = 'index.html';
+            globalThis.location.href = 'index.html';
         })
 })
 
@@ -66,7 +66,7 @@ saveButton.addEventListener('click', () => {
     const title = document.getElementById('detail-edit-title').value;
     const description = document.getElementById('detail-edit-description').value;
     const content = document.getElementById('detail-edit-content').value;
-    const postId = saveButton.getAttribute('data-id');
+    const postId = saveButton.dataset.id;
 
     fetch(url, {
         method: 'PUT',

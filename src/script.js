@@ -32,7 +32,7 @@ toggleButton.addEventListener('click', () => {
 // Klick auf Titel der Seite -> Main-Page
 const pageTitle = document.getElementById('headername');
 pageTitle.addEventListener('click', () => {
-    window.location.href = 'index.html';
+    globalThis.location.href = 'index.html';
 });
 
 // Karten Funktionen
@@ -52,7 +52,7 @@ function getCards() {
             const firstElement = data[0];
             const card = document.createElement('div');
             card.classList.add('hero-card');
-            card.setAttribute('data-id', firstElement.id);
+            card.dataset.id = firstElement.id;
             card.innerHTML = `
                 <div class="hero-image"></div>
                 <div class="hero-body">
@@ -62,14 +62,13 @@ function getCards() {
             `;
             heroContainer.appendChild(card);
             card.addEventListener('click', () => {
-                window.location.href = `post.php?id=${firstElement.id}`;
+                globalThis.location.href = `post.php?id=${firstElement.id}`;
             });
 
             data.slice(1).forEach(post => {
                 const card = document.createElement('div');
-                card.classList.add('card1');
-                card.classList.add('squircle-corners');
-                card.setAttribute('data-id', post.id);
+                card.classList.add('card1', 'squircle-corners');
+                card.dataset.id = post.id;
                 card.innerHTML = `
             <div class="card-image"></div>
             <div class="card-body">
@@ -83,8 +82,8 @@ function getCards() {
             const cards = document.querySelectorAll('.card1');
             cards.forEach(card => {
                 card.addEventListener('click', () => {
-                    const postId = card.getAttribute('data-id');
-                    window.location.href = `post.php?id=${postId}`;
+                    const postId = card.dataset.id;
+                    globalThis.location.href = `post.php?id=${postId}`;
                 });
             });
         });
