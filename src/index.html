@@ -2,6 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Essen in Köln</title>
     <link rel="stylesheet" href="style.css">
 </head>
@@ -35,9 +36,14 @@
                 <textarea class="input-field height-80" id="new-post-description" maxlength="200"></textarea>
             </div>
             <div class="display-flex-column padding-10">
-                <label class="label" for="new-post-content">Inhalt</label>
-                <textarea class="input-field height-200" id="new-post-content"></textarea>
-            </div>
+                    <label class="label" for="new-post-content">Inhalt</label>
+                    <textarea class="input-field height-200" id="new-post-content"></textarea>
+                </div>
+                <div class="display-flex-column padding-10">
+                    <label class="label" for="new-post-image">Bild</label>
+                    <input class="input-field" type="file" id="new-post-image" accept="image/*">
+                    <img id="new-post-image-preview" src="" alt="Vorschau" style="display:none; margin-top:8px; max-height:150px; border-radius:8px; object-fit:cover;">
+                </div>
         </div>
         <div class="pop-up-footer">
             <button id="new-post-cancel" class="button">Abbrechen</button>

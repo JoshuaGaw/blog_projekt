@@ -3,7 +3,12 @@ include_once 'db.php';
 /** @var mysqli $conn */
 
 $id = $_GET['id'];
-$stmt = mysqli_prepare($conn, "SELECT * FROM posts WHERE id = ?");
+$stmt = mysqli_prepare($conn,
+    "SELECT p.*, i.file_path AS cover_image
+     FROM posts p
+     LEFT JOIN images i ON i.post_id = p.id AND i.is_cover = 1
+     WHERE p.id = ?"
+);
 mysqli_stmt_bind_param($stmt, "i", $id);
 mysqli_stmt_execute($stmt);
 $result = mysqli_stmt_get_result($stmt);
@@ -45,6 +50,11 @@ $post = mysqli_fetch_assoc($result);
                 <label class="label" for="detail-edit-content">Inhalt</label>
                 <textarea id="detail-edit-content" class="input-field height-200" placeholder="Inhalt"><?php echo $post['content']; ?></textarea>
             </div>
+            <div class="display-flex-column padding-10">
+                <label class="label" for="detail-edit-image">Bild ändern</label>
+                <input type="file" id="detail-edit-image" class="input-field" accept="image/*">
+                <img id="detail-edit-image-preview" src="" alt="Vorschau" style="display:none; margin-top:8px; max-height:150px; border-radius:8px; object-fit:cover;">
+            </div>
         </div>
         <div class="pop-up-footer">
             <button id="new-post-cancel" class="button">Abbrechen</button>
@@ -55,6 +65,9 @@ $post = mysqli_fetch_assoc($result);
 
 <main class="detail-main-container">
     <div class="detail-container">
+        <?php if (!empty($post['cover_image'])): ?>
+            <img class="detail-hero-image" src="<?php echo htmlspecialchars($post['cover_image']); ?>" alt="<?php echo htmlspecialchars($post['title']); ?>">
+        <?php endif; ?>
         <h1 class="detail-title"><?php echo $post['title']; ?></h1>
         <p class="detail-content"><?php echo $post['content']; ?></p>
         <div class="detail-card-footer">

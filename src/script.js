@@ -39,7 +39,7 @@ pageTitle.addEventListener('click', () => {
 
 // Karten aus der DB holen, Karten erstellen, Kartendetails anzeigen
 
-const url = "http://localhost/BlogProjekt/src/posts.php";
+const url = "http://localhost/Blog_Projekt/src/posts.php";
 const postsContainer = document.getElementById('posts-container');
 const heroContainer = document.getElementById('hero-container');
 
@@ -53,8 +53,11 @@ function getCards() {
             const card = document.createElement('div');
             card.classList.add('hero-card');
             card.dataset.id = firstElement.id;
+            const heroImgHtml = firstElement.cover_image
+                ? `<div class="hero-image-wrapper"><img class="hero-image" src="${firstElement.cover_image}" alt="${firstElement.title}"></div>`
+                : `<div class="hero-image-wrapper hero-image-placeholder"></div>`;
             card.innerHTML = `
-                <div class="hero-image"></div>
+                ${heroImgHtml}
                 <div class="hero-body">
                 <h2>${firstElement.title}</h2>
                 <p>${firstElement.description}</p>
@@ -69,8 +72,11 @@ function getCards() {
                 const card = document.createElement('div');
                 card.classList.add('card1', 'squircle-corners');
                 card.dataset.id = post.id;
+                const imgHtml = post.cover_image
+                    ? `<img class="card-image" src="${post.cover_image}" alt="${post.title}">`
+                    : `<div class="card-image card-image-placeholder"></div>`;
                 card.innerHTML = `
-            <div class="card-image"></div>
+            ${imgHtml}
             <div class="card-body">
             <h2>${post.title}</h2>
             <p>${post.description}</p>
@@ -109,10 +115,14 @@ saveButton.addEventListener('click', () => {
     const title = document.getElementById('new-post-title').value;
     const description = document.getElementById('new-post-description').value;
     const content = document.getElementById('new-post-content').value;
+    const imageFile = document.getElementById('new-post-image').files[0];
     const formData = new FormData();
     formData.append('title', title);
-    formData.append('description', description)
+    formData.append('description', description);
     formData.append('content', content);
+    if (imageFile) {
+        formData.append('image', imageFile);
+    }
 
     fetch(url, {
         method: 'POST',
@@ -130,9 +140,27 @@ const cancelButton = document.getElementById('new-post-cancel');
 const titelInput = document.getElementById('new-post-title');
 const descriptionInput = document.getElementById('new-post-description');
 const contentInput = document.getElementById('new-post-content');
+const imageInput = document.getElementById('new-post-image');
+const imagePreview = document.getElementById('new-post-image-preview');
+
+// Bildvorschau
+imageInput.addEventListener('change', () => {
+    const file = imageInput.files[0];
+    if (file) {
+        imagePreview.src = URL.createObjectURL(file);
+        imagePreview.style.display = 'block';
+    } else {
+        imagePreview.src = '';
+        imagePreview.style.display = 'none';
+    }
+});
+
 cancelButton.addEventListener('click', () => {
     titelInput.value = '';
     descriptionInput.value = '';
     contentInput.value = '';
+    imageInput.value = '';
+    imagePreview.src = '';
+    imagePreview.style.display = 'none';
     popup.classList.remove('display-flex');
 })

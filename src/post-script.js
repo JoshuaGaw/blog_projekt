@@ -1,4 +1,4 @@
-const url = "http://localhost/BlogProjekt/src/posts.php";
+const url = "http://localhost/Blog_Projekt/src/posts.php";
 
 const toggleButton = document.getElementById('theme-toggle');
 const body = document.body;
@@ -67,10 +67,21 @@ saveButton.addEventListener('click', () => {
     const description = document.getElementById('detail-edit-description').value;
     const content = document.getElementById('detail-edit-content').value;
     const postId = saveButton.dataset.id;
+    const imageFile = document.getElementById('detail-edit-image').files[0];
+
+    const formData = new FormData();
+    formData.append('_method', 'PUT');
+    formData.append('id', postId);
+    formData.append('title', title);
+    formData.append('description', description);
+    formData.append('content', content);
+    if (imageFile) {
+        formData.append('image', imageFile);
+    }
 
     fetch(url, {
-        method: 'PUT',
-        body: new URLSearchParams({id: postId, title: title, description: description, content: content})
+        method: 'POST',
+        body: formData
     })
         .then(response => response.json())
         .then(() => {
@@ -78,6 +89,20 @@ saveButton.addEventListener('click', () => {
             location.reload();
         })
 })
+
+// Bildvorschau im Bearbeiten-Popup
+const editImageInput = document.getElementById('detail-edit-image');
+const editImagePreview = document.getElementById('detail-edit-image-preview');
+editImageInput.addEventListener('change', () => {
+    const file = editImageInput.files[0];
+    if (file) {
+        editImagePreview.src = URL.createObjectURL(file);
+        editImagePreview.style.display = 'block';
+    } else {
+        editImagePreview.src = '';
+        editImagePreview.style.display = 'none';
+    }
+});
 
 // Abbrechen
 const cancelButton = document.getElementById('new-post-cancel');
