@@ -3,6 +3,21 @@
 document.addEventListener('DOMContentLoaded', () => {
     // Wird ausgeführt, sobald das HTML fertig geladen ist
     getCards();
+
+    // Suche
+    const searchInput = document.getElementById('search-input');
+    let searchTimer;
+    searchInput.addEventListener('input', () => {
+        clearTimeout(searchTimer);
+        searchTimer = setTimeout(() => {
+            const query = searchInput.value.trim();
+            if (query === '') {
+                getCards();
+            } else {
+                searchCards(query);
+            }
+        }, 300);
+    });
 });
 
 
@@ -13,16 +28,20 @@ const body = document.body;
 // Schauen, was der User für ein Theme gespeichert hat
 if (localStorage.getItem('theme') === 'dark') {
     body.classList.add('dark-mode');
+    toggleButton.textContent = '🌙';
+} else {
+    toggleButton.textContent = '☀️';
 }
 
 toggleButton.addEventListener('click', () => {
     body.classList.toggle('dark-mode');
 
-    // Save preference
     if (body.classList.contains('dark-mode')) {
         localStorage.setItem('theme', 'dark');
+        toggleButton.textContent = '🌙';
     } else {
         localStorage.setItem('theme', 'light');
+        toggleButton.textContent = '☀️';
     }
 });
 
@@ -49,15 +68,12 @@ function getCards() {
     fetch(url)
         .then(response => response.json())
         .then(data => {
+            if (!data || data.length === 0) return;
             const firstElement = data[0];
             const card = document.createElement('div');
             card.classList.add('hero-card');
             card.dataset.id = firstElement.id;
-            const heroImgHtml = firstElement.cover_image
-                ? `<div class="hero-image-wrapper"><img class="hero-image" src="${firstElement.cover_image}" alt="${firstElement.title}"></div>`
-                : `<div class="hero-image-wrapper hero-image-placeholder"></div>`;
             card.innerHTML = `
-                ${heroImgHtml}
                 <div class="hero-body">
                 <h2>${firstElement.title}</h2>
                 <p>${firstElement.description}</p>
@@ -72,11 +88,7 @@ function getCards() {
                 const card = document.createElement('div');
                 card.classList.add('card1', 'squircle-corners');
                 card.dataset.id = post.id;
-                const imgHtml = post.cover_image
-                    ? `<img class="card-image" src="${post.cover_image}" alt="${post.title}">`
-                    : `<div class="card-image card-image-placeholder"></div>`;
                 card.innerHTML = `
-            ${imgHtml}
             <div class="card-body">
             <h2>${post.title}</h2>
             <p>${post.description}</p>
@@ -90,6 +102,35 @@ function getCards() {
                 card.addEventListener('click', () => {
                     const postId = card.dataset.id;
                     globalThis.location.href = `post.php?id=${postId}`;
+                });
+            });
+        });
+}
+
+
+function searchCards(query) {
+    postsContainer.innerHTML = '';
+    heroContainer.innerHTML = '';
+    fetch(`${url}?search=${encodeURIComponent(query)}`)
+        .then(response => response.json())
+        .then(data => {
+            if (!data || data.length === 0) {
+                postsContainer.innerHTML = `<p class="search-no-results">Keine Ergebnisse für „${query}".</p>`;
+                return;
+            }
+            data.forEach(post => {
+                const card = document.createElement('div');
+                card.classList.add('card1', 'squircle-corners');
+                card.dataset.id = post.id;
+                card.innerHTML = `
+                    <div class="card-body">
+                    <h2>${post.title}</h2>
+                    <p>${post.description}</p>
+                    </div>
+                `;
+                postsContainer.appendChild(card);
+                card.addEventListener('click', () => {
+                    globalThis.location.href = `post.php?id=${post.id}`;
                 });
             });
         });

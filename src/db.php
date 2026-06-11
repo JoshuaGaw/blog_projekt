@@ -1,8 +1,8 @@
 <?php
 $db_host="localhost";
-$db_user="webdev3";
-$db_password="XC@f6ueo6kdZ*u2m";
-$db_db="webdev3";
+$db_user="root";
+$db_password="";
+$db_db="blog";
 
 $conn = mysqli_connect($db_host, $db_user, $db_password, $db_db);
 

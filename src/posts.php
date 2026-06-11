@@ -8,12 +8,21 @@ header("Content-Type: application/json");
 $method = $_SERVER['REQUEST_METHOD'];
 
 if ($method === 'GET') {
-    $result = mysqli_query($conn,
-        "SELECT p.*, i.file_path AS cover_image
-         FROM posts p
-         LEFT JOIN images i ON i.post_id = p.id AND i.is_cover = 1
-         ORDER BY p.created_at DESC"
-    );
+    if (isset($_GET['search']) && trim($_GET['search']) !== '') {
+        $search = '%' . trim($_GET['search']) . '%';
+        $stmt = mysqli_prepare($conn,
+            "SELECT * FROM posts
+             WHERE title LIKE ? OR description LIKE ? OR content LIKE ?
+             ORDER BY created_at DESC"
+        );
+        mysqli_stmt_bind_param($stmt, "sss", $search, $search, $search);
+        mysqli_stmt_execute($stmt);
+        $result = mysqli_stmt_get_result($stmt);
+    } else {
+        $result = mysqli_query($conn,
+            "SELECT * FROM posts ORDER BY created_at DESC"
+        );
+    }
     $posts = [];
     while ($row = mysqli_fetch_assoc($result)) {
         $posts[] = $row;
