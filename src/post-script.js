@@ -1,4 +1,4 @@
-const url = "http://localhost/Blog_Projekt/src/posts.php";
+const url = "posts.php";
 
 const toggleButton = document.getElementById('theme-toggle');
 const body = document.body;

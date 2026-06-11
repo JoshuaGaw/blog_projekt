@@ -39,7 +39,7 @@ pageTitle.addEventListener('click', () => {
 
 // Karten aus der DB holen, Karten erstellen, Kartendetails anzeigen
 
-const url = "http://localhost/Blog_Projekt/src/posts.php";
+const url = "posts.php";
 const postsContainer = document.getElementById('posts-container');
 const heroContainer = document.getElementById('hero-container');
 
