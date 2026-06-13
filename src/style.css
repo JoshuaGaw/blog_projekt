@@ -290,6 +290,7 @@ body.dark-mode .search-no-results {
     transition: background-color 0.4s ease, color 0.4s ease; /* sanfter Farbwechsel bei Light/Dark */
     background-color: var(--secundary-bg-white-color);       /* leicht abgesetzter Kartenhintergrund */
     box-shadow: rgba(0, 0, 0, 0.35) 0 5px 15px;              /* Schatten gibt der Karte räumliche Tiefe (schwebt über der Seite) */
+    border-radius: 12px;    /* gleichmäßig abgerundete Ecken (feste px = überall identisch, anders als prozentual) */
     overflow: hidden;       /* schneidet Inhalt an den abgerundeten Ecken sauber ab */
     cursor: pointer;        /* signalisiert: ganze Karte ist anklickbar (führt zum Post) */
 }
@@ -540,11 +541,6 @@ body.dark-mode .search-no-results {
    Diese kleinen "Utility"-Klassen kombiniert man im HTML, statt
    für jedes Element eine eigene Regel zu schreiben.
    ============================================================ */
-
-.squircle-corners {
-    corner-shape: squircle; /* "Squircle" = weichere Ecken zwischen Kreis und Quadrat (iOS-Look) */
-    border-radius: 10%;
-}
 
 .display-none {
     display: none;          /* blendet ein Element komplett aus (Popups im Ausgangszustand) */

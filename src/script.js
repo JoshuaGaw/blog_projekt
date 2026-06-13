@@ -86,7 +86,7 @@ function getCards() {
 
             data.slice(1).forEach(post => {
                 const card = document.createElement('div');
-                card.classList.add('card1', 'squircle-corners');
+                card.classList.add('card1');
                 card.dataset.id = post.id;
                 card.innerHTML = `
             <div class="card-body">
@@ -120,7 +120,7 @@ function searchCards(query) {
             }
             data.forEach(post => {
                 const card = document.createElement('div');
-                card.classList.add('card1', 'squircle-corners');
+                card.classList.add('card1');
                 card.dataset.id = post.id;
                 card.innerHTML = `
                     <div class="card-body">
