@@ -6,6 +6,9 @@ const body = document.body;
 // Schauen, was der User für ein Theme gespeichert hat
 if (localStorage.getItem('theme') === 'dark') {
     body.classList.add('dark-mode');
+    toggleButton.textContent = '🌙';
+} else {
+    toggleButton.textContent = '☀️';
 }
 
 toggleButton.addEventListener('click', () => {
@@ -14,8 +17,10 @@ toggleButton.addEventListener('click', () => {
     // Save preference
     if (body.classList.contains('dark-mode')) {
         localStorage.setItem('theme', 'dark');
+        toggleButton.textContent = '🌙';
     } else {
         localStorage.setItem('theme', 'light');
+        toggleButton.textContent = '☀️';
     }
 });
 

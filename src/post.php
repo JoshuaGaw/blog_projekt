@@ -28,7 +28,7 @@ $post = mysqli_fetch_assoc($result);
             KÖLN ESSENMEILE
         </div>
         <div class="toggle-spacer"></div>
-        <button id="theme-toggle" class="darkmode-toggle">Toggle Mode</button>
+        <button id="theme-toggle" class="darkmode-toggle" title="Dark/Light Mode">☀️</button>
     </div>
 </header>
 

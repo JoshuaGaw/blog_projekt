@@ -136,7 +136,6 @@ function searchCards(query) {
         });
 }
 
-
 // Pop-up-Funktionen
 
 // Popup anzeigen
