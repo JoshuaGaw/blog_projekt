@@ -61,11 +61,55 @@ const popup = document.getElementById('detail-edit-container');
 
 editButton.addEventListener('click', () => {
     popup.classList.add('display-flex');
+    document.body.classList.add('no-scroll');
 })
 
 // Post bearbeiten
 
+const MAX_IMAGE_BYTES = 5 * 1024 * 1024; // 5 MB
+const ALLOWED_IMAGE_EXTENSIONS = ['jpg', 'jpeg', 'png', 'gif', 'webp'];
+
 const saveButton = document.getElementById('detail-edit-submit');
+const editImageError = document.getElementById('detail-edit-image-error');
+const editTitleError = document.getElementById('detail-edit-title-error');
+
+function showEditImageError(msg) {
+    editImageError.textContent = msg;
+    editImageError.style.display = 'block';
+}
+
+function clearEditImageError() {
+    editImageError.textContent = '';
+    editImageError.style.display = 'none';
+}
+
+function showEditTitleError(msg) {
+    editTitleError.textContent = msg;
+    editTitleError.style.display = 'block';
+}
+
+function clearEditTitleError() {
+    editTitleError.textContent = '';
+    editTitleError.style.display = 'none';
+}
+
+function getFileExtension(file) {
+    const name = file.name || '';
+    const dot = name.lastIndexOf('.');
+    if (dot === -1) return '';
+    return name.slice(dot + 1).toLowerCase();
+}
+
+function validateImageFile(file) {
+    const ext = getFileExtension(file);
+    if (!ALLOWED_IMAGE_EXTENSIONS.includes(ext)) {
+        return 'Ungültiges Bildformat. Erlaubt: ' + ALLOWED_IMAGE_EXTENSIONS.join(', ') + '.';
+    }
+    if (file.size > MAX_IMAGE_BYTES) {
+        return 'Die Datei ist zu groß. Maximal 5 MB sind erlaubt.';
+    }
+    return null;
+}
 
 saveButton.addEventListener('click', () => {
     const title = document.getElementById('detail-edit-title').value;
@@ -73,6 +117,22 @@ saveButton.addEventListener('click', () => {
     const content = document.getElementById('detail-edit-content').value;
     const postId = saveButton.dataset.id;
     const imageFile = document.getElementById('detail-edit-image').files[0];
+
+    if (title.trim() === '') {
+        showEditTitleError('Ein Titel ist erforderlich.');
+        document.getElementById('detail-edit-title').focus();
+        return;
+    }
+    clearEditTitleError();
+
+    if (imageFile) {
+        const err = validateImageFile(imageFile);
+        if (err) {
+            showEditImageError(err);
+            return;
+        }
+    }
+    clearEditImageError();
 
     const formData = new FormData();
     formData.append('_method', 'PUT');
@@ -88,9 +148,14 @@ saveButton.addEventListener('click', () => {
         method: 'POST',
         body: formData
     })
-        .then(response => response.json())
-        .then(() => {
+        .then(response => response.json().then(data => ({ ok: response.ok, data })))
+        .then(({ ok, data }) => {
+            if (!ok || data.success === false) {
+                showEditImageError(data.error || 'Speichern fehlgeschlagen.');
+                return;
+            }
             popup.classList.remove('display-flex');
+            document.body.classList.remove('no-scroll');
             location.reload();
         })
 })
@@ -101,9 +166,19 @@ const editImagePreview = document.getElementById('detail-edit-image-preview');
 editImageInput.addEventListener('change', () => {
     const file = editImageInput.files[0];
     if (file) {
+        const err = validateImageFile(file);
+        if (err) {
+            showEditImageError(err);
+            editImageInput.value = '';
+            editImagePreview.src = '';
+            editImagePreview.style.display = 'none';
+            return;
+        }
+        clearEditImageError();
         editImagePreview.src = URL.createObjectURL(file);
         editImagePreview.style.display = 'block';
     } else {
+        clearEditImageError();
         editImagePreview.src = '';
         editImagePreview.style.display = 'none';
     }
@@ -112,5 +187,8 @@ editImageInput.addEventListener('change', () => {
 // Abbrechen
 const cancelButton = document.getElementById('new-post-cancel');
 cancelButton.addEventListener('click', () => {
+    clearEditImageError();
+    clearEditTitleError();
     popup.classList.remove('display-flex');
+    document.body.classList.remove('no-scroll');
 })

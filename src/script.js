@@ -144,18 +144,79 @@ const popup = document.getElementById('new-post-container');
 const openPopupButton = document.getElementById('new-post-button');
 
 openPopupButton.addEventListener('click', () => {
-    popup.classList.add('display-flex');
+    popup.classList.toggle('display-flex');
+    document.body.classList.toggle('no-scroll', popup.classList.contains('display-flex'));
 });
 
 // Pop-up-Eintrag speichern
 
+const MAX_IMAGE_BYTES = 5 * 1024 * 1024; // 5 MB
+const ALLOWED_IMAGE_EXTENSIONS = ['jpg', 'jpeg', 'png', 'gif', 'webp'];
+
 const saveButton = document.getElementById('new-post-submit');
+const imageError = document.getElementById('new-post-image-error');
+const titleError = document.getElementById('new-post-title-error');
+
+function showImageError(msg) {
+    imageError.textContent = msg;
+    imageError.style.display = 'block';
+}
+
+function clearImageError() {
+    imageError.textContent = '';
+    imageError.style.display = 'none';
+}
+
+function showTitleError(msg) {
+    titleError.textContent = msg;
+    titleError.style.display = 'block';
+}
+
+function clearTitleError() {
+    titleError.textContent = '';
+    titleError.style.display = 'none';
+}
+
+function getFileExtension(file) {
+    const name = file.name || '';
+    const dot = name.lastIndexOf('.');
+    if (dot === -1) return '';
+    return name.slice(dot + 1).toLowerCase();
+}
+
+function validateImageFile(file) {
+    const ext = getFileExtension(file);
+    if (!ALLOWED_IMAGE_EXTENSIONS.includes(ext)) {
+        return 'Ungültiges Bildformat. Erlaubt: ' + ALLOWED_IMAGE_EXTENSIONS.join(', ') + '.';
+    }
+    if (file.size > MAX_IMAGE_BYTES) {
+        return 'Die Datei ist zu groß. Maximal 5 MB sind erlaubt.';
+    }
+    return null;
+}
 
 saveButton.addEventListener('click', () => {
     const title = document.getElementById('new-post-title').value;
     const description = document.getElementById('new-post-description').value;
     const content = document.getElementById('new-post-content').value;
     const imageFile = document.getElementById('new-post-image').files[0];
+
+    if (title.trim() === '') {
+        showTitleError('Ein Titel ist erforderlich.');
+        document.getElementById('new-post-title').focus();
+        return;
+    }
+    clearTitleError();
+
+    if (imageFile) {
+        const err = validateImageFile(imageFile);
+        if (err) {
+            showImageError(err);
+            return;
+        }
+    }
+    clearImageError();
+
     const formData = new FormData();
     formData.append('title', title);
     formData.append('description', description);
@@ -168,9 +229,14 @@ saveButton.addEventListener('click', () => {
         method: 'POST',
         body: formData
     })
-        .then(response => response.json())
-        .then(() => {
+        .then(response => response.json().then(data => ({ ok: response.ok, data })))
+        .then(({ ok, data }) => {
+            if (!ok || data.success === false) {
+                showImageError(data.error || 'Speichern fehlgeschlagen.');
+                return;
+            }
             popup.classList.remove('display-flex');
+            document.body.classList.remove('no-scroll');
             getCards();
         })
 })
@@ -187,9 +253,19 @@ const imagePreview = document.getElementById('new-post-image-preview');
 imageInput.addEventListener('change', () => {
     const file = imageInput.files[0];
     if (file) {
+        const err = validateImageFile(file);
+        if (err) {
+            showImageError(err);
+            imageInput.value = '';
+            imagePreview.src = '';
+            imagePreview.style.display = 'none';
+            return;
+        }
+        clearImageError();
         imagePreview.src = URL.createObjectURL(file);
         imagePreview.style.display = 'block';
     } else {
+        clearImageError();
         imagePreview.src = '';
         imagePreview.style.display = 'none';
     }
@@ -202,5 +278,8 @@ cancelButton.addEventListener('click', () => {
     imageInput.value = '';
     imagePreview.src = '';
     imagePreview.style.display = 'none';
+    clearImageError();
+    clearTitleError();
     popup.classList.remove('display-flex');
+    document.body.classList.remove('no-scroll');
 })

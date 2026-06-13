@@ -1,5 +1,15 @@
 /* Universal CSS */
 
+.image-error {
+    margin-top: 6px;
+    padding: 8px 10px;
+    border-radius: 6px;
+    background-color: #fee2e2;
+    color: #b91c1c;
+    font-size: 0.9rem;
+    border: 1px solid #fecaca;
+}
+
 :root {
     --main-red-color: #b91c1c;
 
@@ -31,6 +41,11 @@ body {
     transition: background-color 0.4s ease, color 0.4s ease;
     margin: 0;
     background-color: var(--bg-white-color);
+    font-family: Verdana, sans-serif;
+}
+
+input, textarea, button, select {
+    font-family: inherit;
 }
 
 
@@ -103,6 +118,7 @@ header {
     height: 80px;
     position: sticky;
     top: 0;
+    z-index: 2;
 }
 
 .header-content {
@@ -287,6 +303,7 @@ body.dark-mode .search-no-results {
 .card-body {
     padding: 15px;
     font-family: Verdana, sans-serif;
+    overflow-wrap: anywhere;
 }
 
 .card-body h2 {
@@ -316,7 +333,7 @@ body.dark-mode .search-no-results {
 
 /* Hero Karte CSS */
 
-.hero-container {
+#hero-container {
     display: flex;
     justify-content: center;
     align-items: center;
@@ -346,6 +363,7 @@ body.dark-mode .search-no-results {
 .hero-body {
     padding: 40px;
     font-family: Verdana, sans-serif;
+    overflow-wrap: anywhere;
 }
 
 .hero-body h2 {
@@ -363,9 +381,16 @@ body.dark-mode .search-no-results {
 /* Pop-Up CSS */
 
 .pop-up {
-    width: 100%;
     position: fixed;
+    inset: 0;
+    height: 100vh;
+    height: 100dvh;
     z-index: 1;
+    padding-top: 80px;
+}
+
+.no-scroll {
+    overflow: hidden;
 }
 
 .form-container {
@@ -384,6 +409,7 @@ body.dark-mode .search-no-results {
     height: auto;
     max-height: 90vh;
     overflow-y: auto;
+    overscroll-behavior: contain;
     border-radius: 20px;
     background-color: var(--secundary-bg-white-color);
     box-shadow: rgba(0, 0, 0, 0.35) 0 5px 15px;
@@ -398,7 +424,6 @@ body.dark-mode .search-no-results {
 .new-post-header-title {
     font-size: 1.6rem;
     font-weight: bold;
-    font-family: Veradana, sans-serif;
     top: 0;
     padding: 10px;
 }
@@ -414,12 +439,10 @@ body.dark-mode .search-no-results {
 
 .label {
     font-size: 1.25rem;
-    font-family: sans-serif;
     margin: 5px 0;
 }
 
 .input-field {
-    font-family: sans-serif;
     font-size: 1rem;
     border: 1px solid var(--brown-red-color);
     border-radius: 5px;
@@ -431,13 +454,19 @@ body.dark-mode .search-no-results {
 
 /* Detail CSS */
 
-.detail-hero-image {
+.detail-hero-frame {
     width: 83.333333%;
-    max-height: 400px;
-    object-fit: cover;
-    border-radius: 12px;
+    aspect-ratio: 16 / 9;
     margin-top: 20px;
     margin-bottom: 10px;
+    border-radius: 12px;
+    overflow: hidden;
+}
+
+.detail-hero-image {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
     display: block;
 }
 
@@ -467,19 +496,19 @@ body.dark-mode .search-no-results {
 .detail-title {
     font-size: var(--detail-font-size-title);
     font-weight: bold;
-    font-family: "Times New Roman", sans-serif;
     margin: 0;
     width: 83.333333%;
     border-bottom: 1px solid var(--secundary-black-text-color);
     padding-bottom: 10px;
+    overflow-wrap: anywhere;
 }
 
 .detail-content {
     font-size: var(--detail-font-size-content);
-    font-family: sans-serif;
     margin: 20px 0 0;
     width: 83.333333%;
     line-height: 1.3;
+    overflow-wrap: anywhere;
 }
 
 .detail-card-footer {
@@ -593,6 +622,10 @@ body.dark-mode .search-no-results {
         width: 90%;
     }
 
+    .detail-hero-frame {
+        width: 95%;
+    }
+
     .detail-title {
         font-size: 2rem;
         width: 95%;
@@ -680,6 +713,10 @@ body.dark-mode .search-no-results {
         border-radius: 12px;
     }
 
+    .detail-hero-frame {
+        width: 95%;
+    }
+
     .detail-title {
         font-size: 1.5rem;
         width: 100%;
@@ -690,10 +727,33 @@ body.dark-mode .search-no-results {
         width: 100%;
     }
 
+    .pop-up {
+        padding-top: 64px;
+    }
+
     .pop-up-card {
         width: 95%;
         max-width: 95vw;
+        max-height: 100%;
         border-radius: 12px;
+        padding: 12px;
+    }
+
+    .new-post-header-title {
+        font-size: 1.25rem;
+        padding: 4px;
+    }
+
+    .padding-10 {
+        padding: 6px;
+    }
+
+    .height-80 {
+        height: clamp(50px, 10dvh, 80px);
+    }
+
+    .height-200 {
+        height: clamp(90px, 22dvh, 200px);
     }
 
     .top-spacer {

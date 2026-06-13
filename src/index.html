@@ -30,20 +30,22 @@
         </div>
         <div class="pop-up-content">
             <div class="display-flex-column padding-10">
-                <label class="label" for="new-post-title">Titel</label>
-                <input class="input-field height-30" type="text" id="new-post-title">
+                <label class="label" for="new-post-title">Titel (max. 32 Zeichen)</label>
+                <input class="input-field height-30" type="text" id="new-post-title" maxlength="32" required>
+                <div id="new-post-title-error" class="image-error" style="display:none;"></div>
             </div>
             <div class="display-flex-column padding-10">
-                <label class="label" for="new-post-description">Beschreibung</label>
-                <textarea class="input-field height-80" id="new-post-description" maxlength="200"></textarea>
+                <label class="label" for="new-post-description">Beschreibung (max. 180 Zeichen)</label>
+                <textarea class="input-field height-80" id="new-post-description" maxlength="180"></textarea> 
             </div>
             <div class="display-flex-column padding-10">
-                    <label class="label" for="new-post-content">Inhalt</label>
-                    <textarea class="input-field height-200" id="new-post-content"></textarea>
+                    <label class="label" for="new-post-content">Inhalt (max. 500 Zeichen)</label>
+                    <textarea class="input-field height-200" id="new-post-content" maxlength="500"></textarea>
                 </div>
                 <div class="display-flex-column padding-10">
-                    <label class="label" for="new-post-image">Bild</label>
+                    <label class="label" for="new-post-image">Bild (max. 5 MB)</label>
                     <input class="input-field" type="file" id="new-post-image" accept="image/*">
+                    <div id="new-post-image-error" class="image-error" style="display:none;"></div>
                     <img id="new-post-image-preview" src="" alt="Vorschau" style="display:none; margin-top:8px; max-height:150px; border-radius:8px; object-fit:cover;">
                 </div>
         </div>

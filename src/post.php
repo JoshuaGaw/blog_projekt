@@ -18,6 +18,7 @@ $post = mysqli_fetch_assoc($result);
 <html lang="de">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title><?php echo $post['title']; ?></title>
     <link rel="stylesheet" href="style.css">
 </head>
@@ -39,20 +40,22 @@ $post = mysqli_fetch_assoc($result);
         </div>
         <div class="pop-up-content">
             <div class="display-flex-column padding-10">
-                <label class="label" for="detail-edit-title">Titel</label>
-                <input type="text" id="detail-edit-title" class="input-field height-30" placeholder="Titel" value="<?php echo $post['title']; ?>">
+                <label class="label" for="detail-edit-title">Titel (max. 32 Zeichen)</label>
+                <input type="text" id="detail-edit-title" class="input-field height-30" value="<?php echo $post['title']; ?>" maxlength="32" required>
+                <div id="detail-edit-title-error" class="image-error" style="display:none;"></div>
             </div>
             <div class="display-flex-column padding-10">
-                <label class="label" for="detail-edit-description">Beschreibung</label>
-                <textarea id="detail-edit-description" class="input-field height-80" placeholder="Beschreibung"><?php echo $post['description']; ?></textarea>
+                <label class="label" for="detail-edit-description">Beschreibung (max. 180 Zeichen)</label>
+                <textarea id="detail-edit-description" class="input-field height-80" maxlength="180"><?php echo $post['description']; ?></textarea>
             </div>
             <div class="display-flex-column padding-10">
-                <label class="label" for="detail-edit-content">Inhalt</label>
-                <textarea id="detail-edit-content" class="input-field height-200" placeholder="Inhalt"><?php echo $post['content']; ?></textarea>
+                <label class="label" for="detail-edit-content">Inhalt (max. 500 Zeichen)</label>
+                <textarea id="detail-edit-content" class="input-field height-200" maxlength="500"><?php echo $post['content']; ?></textarea>
             </div>
             <div class="display-flex-column padding-10">
-                <label class="label" for="detail-edit-image">Bild ändern</label>
+                <label class="label" for="detail-edit-image">Bild ändern (max. 5 MB)</label>
                 <input type="file" id="detail-edit-image" class="input-field" accept="image/*">
+                <div id="detail-edit-image-error" class="image-error" style="display:none;"></div>
                 <img id="detail-edit-image-preview" src="" alt="Vorschau" style="display:none; margin-top:8px; max-height:150px; border-radius:8px; object-fit:cover;">
             </div>
         </div>
@@ -66,7 +69,9 @@ $post = mysqli_fetch_assoc($result);
 <main class="detail-main-container">
     <div class="detail-container">
         <?php if (!empty($post['cover_image'])): ?>
-            <img class="detail-hero-image" src="<?php echo htmlspecialchars($post['cover_image']); ?>" alt="<?php echo htmlspecialchars($post['title']); ?>">
+            <div class="detail-hero-frame">
+                <img class="detail-hero-image" src="<?php echo htmlspecialchars($post['cover_image']); ?>" alt="<?php echo htmlspecialchars($post['title']); ?>">
+            </div>
         <?php endif; ?>
         <h1 class="detail-title"><?php echo $post['title']; ?></h1>
         <p class="detail-content"><?php echo $post['content']; ?></p>
