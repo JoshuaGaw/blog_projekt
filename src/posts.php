@@ -94,9 +94,9 @@ if ($method === 'GET') {
         exit;
     }
     $contentRaw = isset($_POST['content']) ? $_POST['content'] : (isset($data['content']) ? $data['content'] : '');
-    if (mb_strlen($contentRaw) > 500) {
+    if (mb_strlen($contentRaw) > 2000) {
         http_response_code(400);
-        echo json_encode(["success" => false, "error" => "Der Inhalt darf maximal 500 Zeichen lang sein."]);
+        echo json_encode(["success" => false, "error" => "Der Inhalt darf maximal 2000 Zeichen lang sein."]);
         exit;
     }
 
@@ -110,7 +110,7 @@ if ($method === 'GET') {
     $description = $_POST['description'];
     $content = $_POST['content'];
 
-    $stmt = mysqli_prepare($conn, "INSERT INTO posts (user_id, title, description, content, status, created_at, updated_at) VALUES (1, ?, ?, ?, 'published', NOW(), NOW())");
+    $stmt = mysqli_prepare($conn, "INSERT INTO posts (title, description, content, created_at, updated_at) VALUES (?, ?, ?, NOW(), NOW())");
     mysqli_stmt_bind_param($stmt, "sss", $title, $description, $content);
     if (mysqli_stmt_execute($stmt)) {
         $newId = mysqli_insert_id($conn);
@@ -121,7 +121,7 @@ if ($method === 'GET') {
             $uploadDir = __DIR__ . '/uploads/';
             if (move_uploaded_file($_FILES['image']['tmp_name'], $uploadDir . $filename)) {
                 $filePath = 'uploads/' . $filename;
-                $imgStmt = mysqli_prepare($conn, "INSERT INTO images (post_id, file_path, is_cover, uploaded_at) VALUES (?, ?, 1, NOW())");
+                $imgStmt = mysqli_prepare($conn, "INSERT INTO images (post_id, file_path, is_cover) VALUES (?, ?, 1)");
                 mysqli_stmt_bind_param($imgStmt, "is", $newId, $filePath);
                 mysqli_stmt_execute($imgStmt);
             }
@@ -151,9 +151,9 @@ if ($method === 'GET') {
         exit;
     }
     $contentRaw = isset($_POST['content']) ? $_POST['content'] : (isset($data['content']) ? $data['content'] : '');
-    if (mb_strlen($contentRaw) > 500) {
+    if (mb_strlen($contentRaw) > 2000) {
         http_response_code(400);
-        echo json_encode(["success" => false, "error" => "Der Inhalt darf maximal 500 Zeichen lang sein."]);
+        echo json_encode(["success" => false, "error" => "Der Inhalt darf maximal 2000 Zeichen lang sein."]);
         exit;
     }
 
@@ -181,7 +181,7 @@ if ($method === 'GET') {
                 $delStmt = mysqli_prepare($conn, "DELETE FROM images WHERE post_id = ? AND is_cover = 1");
                 mysqli_stmt_bind_param($delStmt, "i", $id);
                 mysqli_stmt_execute($delStmt);
-                $imgStmt = mysqli_prepare($conn, "INSERT INTO images (post_id, file_path, is_cover, uploaded_at) VALUES (?, ?, 1, NOW())");
+                $imgStmt = mysqli_prepare($conn, "INSERT INTO images (post_id, file_path, is_cover) VALUES (?, ?, 1)");
                 mysqli_stmt_bind_param($imgStmt, "is", $id, $filePath);
                 mysqli_stmt_execute($imgStmt);
             }
@@ -212,9 +212,9 @@ if ($method === 'GET') {
         exit;
     }
     $contentRaw = isset($_POST['content']) ? $_POST['content'] : (isset($data['content']) ? $data['content'] : '');
-    if (mb_strlen($contentRaw) > 500) {
+    if (mb_strlen($contentRaw) > 2000) {
         http_response_code(400);
-        echo json_encode(["success" => false, "error" => "Der Inhalt darf maximal 500 Zeichen lang sein."]);
+        echo json_encode(["success" => false, "error" => "Der Inhalt darf maximal 2000 Zeichen lang sein."]);
         exit;
     }
     $description = $data['description'];

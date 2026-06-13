@@ -25,7 +25,7 @@ $post = mysqli_fetch_assoc($result);
 <body>
 <header class="header">
     <div class="header-content">
-        <div id="headername" class="headername">
+        <div id="headername">
             KÖLN ESSENMEILE
         </div>
         <div class="toggle-spacer"></div>
@@ -35,9 +35,7 @@ $post = mysqli_fetch_assoc($result);
 
 <div id="detail-edit-container" class="display-none pop-up">
     <div class="pop-up-card">
-        <div class="new-post-header">
-            <div class="new-post-header-title">Post bearbeiten</div>
-        </div>
+        <div class="new-post-header-title">Post bearbeiten</div>
         <div class="pop-up-content">
             <div class="display-flex-column padding-10">
                 <label class="label" for="detail-edit-title">Titel (max. 32 Zeichen)</label>
@@ -49,8 +47,8 @@ $post = mysqli_fetch_assoc($result);
                 <textarea id="detail-edit-description" class="input-field height-80" maxlength="180"><?php echo $post['description']; ?></textarea>
             </div>
             <div class="display-flex-column padding-10">
-                <label class="label" for="detail-edit-content">Inhalt (max. 500 Zeichen)</label>
-                <textarea id="detail-edit-content" class="input-field height-200" maxlength="500"><?php echo $post['content']; ?></textarea>
+                <label class="label" for="detail-edit-content">Inhalt (max. 2000 Zeichen)</label>
+                <textarea id="detail-edit-content" class="input-field height-200" maxlength="2000"><?php echo $post['content']; ?></textarea>
             </div>
             <div class="display-flex-column padding-10">
                 <label class="label" for="detail-edit-image">Bild ändern (max. 5 MB)</label>
@@ -66,6 +64,21 @@ $post = mysqli_fetch_assoc($result);
     </div>
 </div>
 
+<div id="detail-delete-container" class="display-none pop-up">
+    <div class="pop-up-card">
+        <div class="new-post-header-title">Post löschen</div>
+        <div class="pop-up-content">
+            <div class="padding-10">
+                Möchtest du diesen Post wirklich löschen? Diese Aktion kann nicht rückgängig gemacht werden.
+            </div>
+        </div>
+        <div class="pop-up-footer">
+            <button id="detail-delete-cancel" class="button">Abbrechen</button>
+            <button id="detail-delete-confirm" class="button" data-id="<?php echo $post['id']; ?>">Löschen</button>
+        </div>
+    </div>
+</div>
+
 <main class="detail-main-container">
     <div class="detail-container">
         <?php if (!empty($post['cover_image'])): ?>
@@ -74,6 +87,16 @@ $post = mysqli_fetch_assoc($result);
             </div>
         <?php endif; ?>
         <h1 class="detail-title"><?php echo $post['title']; ?></h1>
+        <?php if (!empty($post['created_at'])):
+            $created = new DateTime($post['created_at']);
+            $updated = new DateTime($post['updated_at']);
+            $wasEdited = $updated > $created;
+            $metaDate = ($wasEdited ? $updated : $created)->format('d.m.Y \u\m H:i \U\h\r');
+        ?>
+            <div class="detail-meta">
+                <?php echo $wasEdited ? 'Zuletzt bearbeitet am ' : 'Veröffentlicht am '; ?><?php echo $metaDate; ?>
+            </div>
+        <?php endif; ?>
         <p class="detail-content"><?php echo $post['content']; ?></p>
         <div class="detail-card-footer">
             <button id="detail-edit-button" class="button">Bearbeiten</button>
@@ -81,6 +104,6 @@ $post = mysqli_fetch_assoc($result);
         </div>
     </div>
 </main>
-</body>
 <script src="post-script.js"></script>
+</body>
 </html>

@@ -38,10 +38,23 @@ pageTitle.addEventListener('click', () => {
 // Löschen + Redirect auf Main-Page
 
 const deleteButton = document.getElementById('detail-delete-button');
+const deletePopup = document.getElementById('detail-delete-container');
+const deleteCancelButton = document.getElementById('detail-delete-cancel');
+const deleteConfirmButton = document.getElementById('detail-delete-confirm');
 
+// Klick auf Löschen öffnet zunächst nur das Bestätigungsfenster
 deleteButton.addEventListener('click', () => {
-    console.log("delete clicked")
-    const postId = deleteButton.dataset.id;
+    deletePopup.classList.add('display-flex');
+});
+
+// Abbrechen schließt das Bestätigungsfenster ohne Löschen
+deleteCancelButton.addEventListener('click', () => {
+    deletePopup.classList.remove('display-flex');
+});
+
+// Erst nach Bestätigung wird tatsächlich gelöscht
+deleteConfirmButton.addEventListener('click', () => {
+    const postId = deleteConfirmButton.dataset.id;
     fetch(url, {
         method: 'DELETE',
         body: `id=${postId}`

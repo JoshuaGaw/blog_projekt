@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="de">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -10,14 +10,13 @@
 <!-- Header -->
 <header class="header">
     <div class="header-content">
-        <div id="headername" class="headername">
+        <h1 id="headername">
             KÖLN ESSENMEILE
-        </div>
+        </h1>
         <div class="search-wrapper">
             <input type="text" id="search-input" class="search-input" placeholder="Suchen…">
         </div>
         <button id="new-post-button" title="Neuer Eintrag">＋</button>
-        <div class="entry-toggle-spacer"></div>
         <button id="theme-toggle" class="darkmode-toggle" title="Dark/Light Mode">☀️</button>
     </div>
 </header>
@@ -25,9 +24,7 @@
 <!-- Pop-Up -->
 <div id="new-post-container" class="display-none pop-up">
     <div class="pop-up-card">
-        <div class="new-post-header">
-            <div class="new-post-header-title">Neuer Post</div>
-        </div>
+        <div class="new-post-header-title">Neuer Post</div>
         <div class="pop-up-content">
             <div class="display-flex-column padding-10">
                 <label class="label" for="new-post-title">Titel (max. 32 Zeichen)</label>
@@ -39,8 +36,8 @@
                 <textarea class="input-field height-80" id="new-post-description" maxlength="180"></textarea> 
             </div>
             <div class="display-flex-column padding-10">
-                    <label class="label" for="new-post-content">Inhalt (max. 500 Zeichen)</label>
-                    <textarea class="input-field height-200" id="new-post-content" maxlength="500"></textarea>
+                    <label class="label" for="new-post-content">Inhalt (max. 2000 Zeichen)</label>
+                    <textarea class="input-field height-200" id="new-post-content" maxlength="2000"></textarea>
                 </div>
                 <div class="display-flex-column padding-10">
                     <label class="label" for="new-post-image">Bild (max. 5 MB)</label>
@@ -58,15 +55,10 @@
 
 <!-- Karten -->
 <main class="main-content">
-    <div class="header-content-spacer"></div>
     <div id="hero-container"></div>
-    <div class="top-spacer"></div>
-    <div class="grid-container">
-        <div id="posts-container"></div>
-    </div>
+    <div id="posts-container"></div>
 </main>
 
-
-</body>
 <script src="script.js"></script>
+</body>
 </html>
