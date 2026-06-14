@@ -1,38 +1,3 @@
-const url = "posts.php";
-
-const toggleButton = document.getElementById('theme-toggle');
-const body = document.body;
-
-// Schauen, was der User für ein Theme gespeichert hat
-if (localStorage.getItem('theme') === 'dark') {
-    body.classList.add('dark-mode');
-    toggleButton.textContent = '🌙';
-} else {
-    toggleButton.textContent = '☀️';
-}
-
-toggleButton.addEventListener('click', () => {
-    body.classList.toggle('dark-mode');
-
-    // Save preference
-    if (body.classList.contains('dark-mode')) {
-        localStorage.setItem('theme', 'dark');
-        toggleButton.textContent = '🌙';
-    } else {
-        localStorage.setItem('theme', 'light');
-        toggleButton.textContent = '☀️';
-    }
-});
-
-// Header Funktionen
-
-// Klick auf Titel der Seite -> Main-Page
-const pageTitle = document.getElementById('headername');
-pageTitle.addEventListener('click', () => {
-    globalThis.location.href = 'index.html';
-});
-
-
 // Detailseite Funktionen
 
 // Löschen + Redirect auf Main-Page
@@ -54,12 +19,9 @@ deleteCancelButton.addEventListener('click', () => {
 
 // Erst nach Bestätigung wird tatsächlich gelöscht
 deleteConfirmButton.addEventListener('click', () => {
-    const postId = deleteConfirmButton.dataset.id;
-    fetch(url, {
-        method: 'DELETE',
-        body: `id=${postId}`
-    })
-        .then(response => response.json())
+    const formData = new FormData();
+    formData.append('id', deleteConfirmButton.dataset.id);
+    apiSend('DELETE', formData)
         .then(() => {
             globalThis.location.href = 'index.html';
         })
@@ -79,50 +41,9 @@ editButton.addEventListener('click', () => {
 
 // Post bearbeiten
 
-const MAX_IMAGE_BYTES = 5 * 1024 * 1024; // 5 MB
-const ALLOWED_IMAGE_EXTENSIONS = ['jpg', 'jpeg', 'png', 'gif', 'webp'];
-
 const saveButton = document.getElementById('detail-edit-submit');
 const editImageError = document.getElementById('detail-edit-image-error');
 const editTitleError = document.getElementById('detail-edit-title-error');
-
-function showEditImageError(msg) {
-    editImageError.textContent = msg;
-    editImageError.style.display = 'block';
-}
-
-function clearEditImageError() {
-    editImageError.textContent = '';
-    editImageError.style.display = 'none';
-}
-
-function showEditTitleError(msg) {
-    editTitleError.textContent = msg;
-    editTitleError.style.display = 'block';
-}
-
-function clearEditTitleError() {
-    editTitleError.textContent = '';
-    editTitleError.style.display = 'none';
-}
-
-function getFileExtension(file) {
-    const name = file.name || '';
-    const dot = name.lastIndexOf('.');
-    if (dot === -1) return '';
-    return name.slice(dot + 1).toLowerCase();
-}
-
-function validateImageFile(file) {
-    const ext = getFileExtension(file);
-    if (!ALLOWED_IMAGE_EXTENSIONS.includes(ext)) {
-        return 'Ungültiges Bildformat. Erlaubt: ' + ALLOWED_IMAGE_EXTENSIONS.join(', ') + '.';
-    }
-    if (file.size > MAX_IMAGE_BYTES) {
-        return 'Die Datei ist zu groß. Maximal 5 MB sind erlaubt.';
-    }
-    return null;
-}
 
 saveButton.addEventListener('click', () => {
     const title = document.getElementById('detail-edit-title').value;
@@ -132,23 +53,22 @@ saveButton.addEventListener('click', () => {
     const imageFile = document.getElementById('detail-edit-image').files[0];
 
     if (title.trim() === '') {
-        showEditTitleError('Ein Titel ist erforderlich.');
+        showError(editTitleError, 'Ein Titel ist erforderlich.');
         document.getElementById('detail-edit-title').focus();
         return;
     }
-    clearEditTitleError();
+    clearError(editTitleError);
 
     if (imageFile) {
         const err = validateImageFile(imageFile);
         if (err) {
-            showEditImageError(err);
+            showError(editImageError, err);
             return;
         }
     }
-    clearEditImageError();
+    clearError(editImageError);
 
     const formData = new FormData();
-    formData.append('_method', 'PUT');
     formData.append('id', postId);
     formData.append('title', title);
     formData.append('description', description);
@@ -157,14 +77,10 @@ saveButton.addEventListener('click', () => {
         formData.append('image', imageFile);
     }
 
-    fetch(url, {
-        method: 'POST',
-        body: formData
-    })
-        .then(response => response.json().then(data => ({ ok: response.ok, data })))
+    apiSend('PUT', formData)
         .then(({ ok, data }) => {
             if (!ok || data.success === false) {
-                showEditImageError(data.error || 'Speichern fehlgeschlagen.');
+                showError(editImageError, data.error || 'Speichern fehlgeschlagen.');
                 return;
             }
             popup.classList.remove('display-flex');
@@ -181,17 +97,17 @@ editImageInput.addEventListener('change', () => {
     if (file) {
         const err = validateImageFile(file);
         if (err) {
-            showEditImageError(err);
+            showError(editImageError, err);
             editImageInput.value = '';
             editImagePreview.src = '';
             editImagePreview.style.display = 'none';
             return;
         }
-        clearEditImageError();
+        clearError(editImageError);
         editImagePreview.src = URL.createObjectURL(file);
         editImagePreview.style.display = 'block';
     } else {
-        clearEditImageError();
+        clearError(editImageError);
         editImagePreview.src = '';
         editImagePreview.style.display = 'none';
     }
@@ -200,8 +116,8 @@ editImageInput.addEventListener('change', () => {
 // Abbrechen
 const cancelButton = document.getElementById('new-post-cancel');
 cancelButton.addEventListener('click', () => {
-    clearEditImageError();
-    clearEditTitleError();
+    clearError(editImageError);
+    clearError(editTitleError);
     popup.classList.remove('display-flex');
     document.body.classList.remove('no-scroll');
 })

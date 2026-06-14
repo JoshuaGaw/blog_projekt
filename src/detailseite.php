@@ -1,5 +1,7 @@
 <?php
 include_once 'db.php';
+
+// PHP Doc Kommentar, damit IDE weiß, dass die Variable schon initialisiert ist
 /** @var mysqli $conn */
 
 $id = $_GET['id'];
@@ -91,7 +93,7 @@ $post = mysqli_fetch_assoc($result);
             $created = new DateTime($post['created_at']);
             $updated = new DateTime($post['updated_at']);
             $wasEdited = $updated > $created;
-            $metaDate = ($wasEdited ? $updated : $created)->format('d.m.Y \u\m H:i \U\h\r');
+            $metaDate = ($wasEdited ? $updated : $created) -> format('d.m.Y \u\m H:i \U\h\r');
         ?>
             <div class="detail-meta">
                 <?php echo $wasEdited ? 'Zuletzt bearbeitet am ' : 'Veröffentlicht am '; ?><?php echo $metaDate; ?>
@@ -104,6 +106,7 @@ $post = mysqli_fetch_assoc($result);
         </div>
     </div>
 </main>
-<script src="post-script.js"></script>
+<script src="common.js"></script>
+<script src="detailseite-script.js"></script>
 </body>
 </html>

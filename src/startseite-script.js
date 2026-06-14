@@ -1,7 +1,6 @@
-// Funktionen, die beim Aufruf des Browsers sofort ausgeführt werden sollen
+// Setup beim Laden: Karten holen + Suche initialisieren
 
 document.addEventListener('DOMContentLoaded', () => {
-    // Wird ausgeführt, sobald das HTML fertig geladen ist
     getCards();
 
     // Suche
@@ -21,51 +20,17 @@ document.addEventListener('DOMContentLoaded', () => {
 });
 
 
-// Dark Mode
-const toggleButton = document.getElementById('theme-toggle');
-const body = document.body;
-
-// Schauen, was der User für ein Theme gespeichert hat
-if (localStorage.getItem('theme') === 'dark') {
-    body.classList.add('dark-mode');
-    toggleButton.textContent = '🌙';
-} else {
-    toggleButton.textContent = '☀️';
-}
-
-toggleButton.addEventListener('click', () => {
-    body.classList.toggle('dark-mode');
-
-    if (body.classList.contains('dark-mode')) {
-        localStorage.setItem('theme', 'dark');
-        toggleButton.textContent = '🌙';
-    } else {
-        localStorage.setItem('theme', 'light');
-        toggleButton.textContent = '☀️';
-    }
-});
-
-
-// Header Funktionen
-
-// Klick auf Titel der Seite -> Main-Page
-const pageTitle = document.getElementById('headername');
-pageTitle.addEventListener('click', () => {
-    globalThis.location.href = 'index.html';
-});
-
 // Karten Funktionen
 
 // Karten aus der DB holen, Karten erstellen, Kartendetails anzeigen
 
-const url = "posts.php";
 const postsContainer = document.getElementById('posts-container');
 const heroContainer = document.getElementById('hero-container');
 
 function getCards() {
     postsContainer.innerHTML = '';
     heroContainer.innerHTML = '';
-    fetch(url)
+    fetch(API_URL)
         .then(response => response.json())
         .then(data => {
             if (!data || data.length === 0) return;
@@ -81,7 +46,7 @@ function getCards() {
             `;
             heroContainer.appendChild(card);
             card.addEventListener('click', () => {
-                globalThis.location.href = `post.php?id=${firstElement.id}`;
+                globalThis.location.href = `detailseite.php?id=${firstElement.id}`;
             });
 
             data.slice(1).forEach(post => {
@@ -101,7 +66,7 @@ function getCards() {
             cards.forEach(card => {
                 card.addEventListener('click', () => {
                     const postId = card.dataset.id;
-                    globalThis.location.href = `post.php?id=${postId}`;
+                    globalThis.location.href = `detailseite.php?id=${postId}`;
                 });
             });
         });
@@ -111,7 +76,7 @@ function getCards() {
 function searchCards(query) {
     postsContainer.innerHTML = '';
     heroContainer.innerHTML = '';
-    fetch(`${url}?search=${encodeURIComponent(query)}`)
+    fetch(`${API_URL}?search=${encodeURIComponent(query)}`)
         .then(response => response.json())
         .then(data => {
             if (!data || data.length === 0) {
@@ -130,7 +95,7 @@ function searchCards(query) {
                 `;
                 postsContainer.appendChild(card);
                 card.addEventListener('click', () => {
-                    globalThis.location.href = `post.php?id=${post.id}`;
+                    globalThis.location.href = `detailseite.php?id=${post.id}`;
                 });
             });
         });
@@ -150,50 +115,9 @@ openPopupButton.addEventListener('click', () => {
 
 // Pop-up-Eintrag speichern
 
-const MAX_IMAGE_BYTES = 5 * 1024 * 1024; // 5 MB
-const ALLOWED_IMAGE_EXTENSIONS = ['jpg', 'jpeg', 'png', 'gif', 'webp'];
-
 const saveButton = document.getElementById('new-post-submit');
 const imageError = document.getElementById('new-post-image-error');
 const titleError = document.getElementById('new-post-title-error');
-
-function showImageError(msg) {
-    imageError.textContent = msg;
-    imageError.style.display = 'block';
-}
-
-function clearImageError() {
-    imageError.textContent = '';
-    imageError.style.display = 'none';
-}
-
-function showTitleError(msg) {
-    titleError.textContent = msg;
-    titleError.style.display = 'block';
-}
-
-function clearTitleError() {
-    titleError.textContent = '';
-    titleError.style.display = 'none';
-}
-
-function getFileExtension(file) {
-    const name = file.name || '';
-    const dot = name.lastIndexOf('.');
-    if (dot === -1) return '';
-    return name.slice(dot + 1).toLowerCase();
-}
-
-function validateImageFile(file) {
-    const ext = getFileExtension(file);
-    if (!ALLOWED_IMAGE_EXTENSIONS.includes(ext)) {
-        return 'Ungültiges Bildformat. Erlaubt: ' + ALLOWED_IMAGE_EXTENSIONS.join(', ') + '.';
-    }
-    if (file.size > MAX_IMAGE_BYTES) {
-        return 'Die Datei ist zu groß. Maximal 5 MB sind erlaubt.';
-    }
-    return null;
-}
 
 saveButton.addEventListener('click', () => {
     const title = document.getElementById('new-post-title').value;
@@ -202,20 +126,20 @@ saveButton.addEventListener('click', () => {
     const imageFile = document.getElementById('new-post-image').files[0];
 
     if (title.trim() === '') {
-        showTitleError('Ein Titel ist erforderlich.');
+        showError(titleError, 'Ein Titel ist erforderlich.');
         document.getElementById('new-post-title').focus();
         return;
     }
-    clearTitleError();
+    clearError(titleError);
 
     if (imageFile) {
         const err = validateImageFile(imageFile);
         if (err) {
-            showImageError(err);
+            showError(imageError, err);
             return;
         }
     }
-    clearImageError();
+    clearError(imageError);
 
     const formData = new FormData();
     formData.append('title', title);
@@ -225,14 +149,10 @@ saveButton.addEventListener('click', () => {
         formData.append('image', imageFile);
     }
 
-    fetch(url, {
-        method: 'POST',
-        body: formData
-    })
-        .then(response => response.json().then(data => ({ ok: response.ok, data })))
+    apiSend('POST', formData)
         .then(({ ok, data }) => {
             if (!ok || data.success === false) {
-                showImageError(data.error || 'Speichern fehlgeschlagen.');
+                showError(imageError, data.error || 'Speichern fehlgeschlagen.');
                 return;
             }
             popup.classList.remove('display-flex');
@@ -255,17 +175,17 @@ imageInput.addEventListener('change', () => {
     if (file) {
         const err = validateImageFile(file);
         if (err) {
-            showImageError(err);
+            showError(imageError, err);
             imageInput.value = '';
             imagePreview.src = '';
             imagePreview.style.display = 'none';
             return;
         }
-        clearImageError();
+        clearError(imageError);
         imagePreview.src = URL.createObjectURL(file);
         imagePreview.style.display = 'block';
     } else {
-        clearImageError();
+        clearError(imageError);
         imagePreview.src = '';
         imagePreview.style.display = 'none';
     }
@@ -278,8 +198,8 @@ cancelButton.addEventListener('click', () => {
     imageInput.value = '';
     imagePreview.src = '';
     imagePreview.style.display = 'none';
-    clearImageError();
-    clearTitleError();
+    clearError(imageError);
+    clearError(titleError);
     popup.classList.remove('display-flex');
     document.body.classList.remove('no-scroll');
 })

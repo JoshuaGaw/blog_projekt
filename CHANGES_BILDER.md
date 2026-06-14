@@ -202,7 +202,7 @@ Im „Neuer Eintrag"-Popup wurde ein Datei-Upload-Feld mit Live-Vorschau ergänz
 
 ---
 
-## 6. `src/script.js` – Hauptseite JavaScript
+## 6. `src/startseite-script.js` – Hauptseite JavaScript
 
 ### Bild beim Erstellen mitsenden
 
@@ -263,7 +263,7 @@ imagePreview.style.display = 'none';
 
 ---
 
-## 7. `src/post-script.js` – Detailseite JavaScript
+## 7. `src/detailseite-startseite-script.js` – Detailseite JavaScript
 
 ### Bild beim Bearbeiten mitsenden
 
@@ -376,7 +376,7 @@ Das Bild ist in einen Wrapper-`div` eingebettet, damit `object-fit: cover` zuver
 | `src/posts.php` | GET mit JOIN, POST/PUT mit Bild-Upload, DELETE mit Bilder-Vorlöschung |
 | `src/post.php` | GET mit JOIN, Bild in Detailansicht, Upload-Feld im Edit-Popup |
 | `src/index.html` | Upload-Feld mit Vorschau im „Neuer Eintrag"-Popup |
-| `src/script.js` | FormData statt URLSearchParams, Bilder in Karten rendern, Vorschau-Logik |
-| `src/post-script.js` | FormData mit `_method=PUT`, Vorschau-Logik im Edit-Popup |
+| `src/startseite-script.js` | FormData statt URLSearchParams, Bilder in Karten rendern, Vorschau-Logik |
+| `src/detailseite-startseite-script.js` | FormData mit `_method=PUT`, Vorschau-Logik im Edit-Popup |
 | `src/style.css` | Neue Klassen: `.card-image`, `.hero-image-wrapper`, `.hero-image`, `.detail-hero-image`, Placeholder-Styles, Media Queries |
 

@@ -207,12 +207,13 @@ header {
     flex-shrink: 0;         /* Button darf nicht schrumpfen, wenn der Platz eng wird */
 }
 
+/* Das Hovern des Mauszeigers wird vom Browser selber erkannt. */
 #new-post-button:hover {
     background-color: rgba(255, 255, 255, 0.2); /* heller Schleier als Feedback */
     transform: rotate(90deg);                   /* "+" dreht sich zu einem "x"-Eindruck = spielerisches Detail */
 }
 
-/* Abstand zwischen "+"-Button und Theme-Button (ersetzt das frühere leere Spacer-Div). */
+/* Abstand zwischen "+"-Button und Theme-Button. */
 #theme-toggle {
     margin-left: 40px;
 }
