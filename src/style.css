@@ -1,46 +1,83 @@
-/* Universal CSS */
+/* ============================================================
+   UNIVERSAL / GRUNDLAGEN
+   ============================================================ */
 
+/* Fehlermeldung unter Formularfeldern (z.B. "Bild zu groß").
+   Rot eingefärbt, damit der Nutzer den Fehler sofort als Warnung erkennt. */
+.image-error {
+    margin-top: 6px;          /* kleiner Abstand zum Feld darüber, damit es zusammengehörig wirkt */
+    padding: 8px 10px;        /* Innenabstand, damit der Text nicht am Rand der Box klebt */
+    border-radius: 6px;       /* leicht abgerundete Ecken, passend zum restlichen Design */
+    background-color: #fee2e2;/* heller Rotton als Hintergrund = klassische Fehlerfarbe */
+    color: #b91c1c;           /* kräftiges Rot für den Text = gut lesbar auf hellem Rot */
+    font-size: 0.9rem;        /* etwas kleiner als Fließtext, da es nur ein Hinweis ist */
+    border: 1px solid #fecaca;/* dünner Rahmen grenzt die Box sauber vom Hintergrund ab */
+}
+
+/* :root = die oberste Ebene des Dokuments. Hier definieren wir CSS-Variablen
+   einmal zentral. Vorteil: Wollen wir z.B. das Rot ändern,
+   tun wir es nur hier an einer Stelle statt an 20 Stellen im Code. */
 :root {
-    --main-red-color: #b91c1c;
+    --main-red-color: #b91c1c;            /* Hauptfarbe der Marke (Header, Buttons) */
 
-    /* Light Mode */
-    --bg-white-color: #fff8f6;
-    --secundary-bg-white-color: #f5edeb;
-    --black-text-color: #1f2937;
-    --secundary-black-text-color: #6b7280;
+    /* Light Mode Farben */
+    --bg-white-color: #fff8f6;            /* Seitenhintergrund hell */
+    --secundary-bg-white-color: #f5edeb;  /* Hintergrund von Karten/Boxen (leicht abgesetzt) */
+    --black-text-color: #1f2937;          /* dunkle Schrift für Überschriften */
+    --secundary-black-text-color: #6b7280;/* gedämpftes Grau für Nebentext/Linien */
 
-    /* Dark Mode */
-    --bg-dark-mode: #1F1F1E;
-    --secundary-bg-dark-mode: #2C2C2B;
-    --white-text-color: #f9fafb;
+    /* Dark Mode Farben */
+    --bg-dark-mode: #1F1F1E;              /* Seitenhintergrund dunkel */
+    --secundary-bg-dark-mode: #2C2C2B;    /* Karten-Hintergrund im Dark Mode */
+    --white-text-color: #f9fafb;          /* helle Schrift für dunklen Hintergrund */
 
-    /* Weitere Farben */
+    /* Weitere Akzentfarben */
     --orange-color: #d97706;
-    --brown-red-color: #7c2d12;
+    --brown-red-color: #7c2d12;           /* wird für Rahmen der Eingabefelder genutzt */
     --green-color: #3A7D44;
 
+    /* Schriftgrößen der Detailseite als Variablen, damit sie konsistent bleiben */
     --detail-font-size-title: 2.75rem;
     --detail-font-size-content: 1.25rem;
 }
 
+/* '*' trifft jedes Element.
+   box-sizing: border-box sorgt dafür, dass padding und border in die angegebene
+   Breite/Höhe eingerechnet werden. Ohne das würde ein "width: 100%" + padding
+   breiter als 100% werden und Layouts sprengen. Das ist die wichtigste Grundregel. */
 * {
     box-sizing: border-box;
 }
 
 body {
-    transition: background-color 0.4s ease, color 0.4s ease;
-    margin: 0;
-    background-color: var(--bg-white-color);
+    transition: background-color 0.4s ease, color 0.4s ease; /* sanfter Farbübergang beim Umschalten Light/Dark statt hartem Sprung */
+    margin: 0;                              /* Browser geben dem body standardmäßig einen Rand – den entfernen wir */
+    background-color: var(--bg-white-color);/* Standard-Hintergrund (Light Mode) */
+    font-family: Verdana, sans-serif;       /* zentrale Schriftart der ganzen Seite – wird vererbt */
+}
+
+/* Formularelemente erben Schriftart NICHT automatisch vom body (Browser-Eigenheit).
+   Mit font-family: inherit zwingen wir sie, ebenfalls Verdana zu nutzen –
+   sonst hätten Inputs/Buttons die hässliche Browser-Standardschrift. */
+input, textarea, button, select {
+    font-family: inherit;
 }
 
 
-/* Dark Mode CSS */
+/* ============================================================
+   DARK MODE
+   Diese Regeln greifen nur, wenn am <body> die Klasse "dark-mode"
+   hängt (per JavaScript + localStorage gesetzt). Sie überschreiben
+   gezielt die Farben der wichtigsten Elemente.
+   ============================================================ */
 
 body.dark-mode {
-    background-color: var(--bg-dark-mode);
-    color: var(--white-text-color);
+    background-color: var(--bg-dark-mode);  /* dunkler Seitenhintergrund */
+    color: var(--white-text-color);         /* helle Standardschrift */
 }
 
+/* Karten brauchen im Dark Mode einen eigenen, leicht helleren Hintergrund,
+   damit sie sich vom dunklen Seitenhintergrund abheben. */
 body.dark-mode .card1 {
     background-color: var(--secundary-bg-dark-mode);
     color: var(--white-text-color);
@@ -51,6 +88,8 @@ body.dark-mode .hero-card {
     color: var(--white-text-color);
 }
 
+/* Überschriften/Texte in den Karten bekommen im Dark Mode helle Farben,
+   weil das dunkle Standard-Grau auf dunklem Grund unlesbar wäre. */
 body.dark-mode .hero-body h2 {
     color: var(--white-text-color);
 }
@@ -71,6 +110,8 @@ body.dark-mode .pop-up-card {
     background-color: var(--secundary-bg-dark-mode);
 }
 
+/* Eingabefelder im Dark Mode: dunkler Hintergrund + helle Schrift,
+   sonst wäre die Eingabe auf weißem Feld im dunklen Layout ein Fremdkörper. */
 body.dark-mode input,
 body.dark-mode textarea {
     background-color: var(--bg-dark-mode);
@@ -83,256 +124,345 @@ body.dark-mode .detail-container {
 }
 
 body.dark-mode .detail-card-footer {
+    /* color-mix mischt die dunkle Kartenfarbe mit Transparenz, damit der
+       Footer halbtransparent über dem Inhalt "schwebt" (passend zum Blur). */
     background-color: color-mix(in srgb, var(--secundary-bg-dark-mode) 30%, transparent);
 }
 
 
-/* Header CSS */
+/* ============================================================
+   HEADER (rote Leiste oben)
+   ============================================================ */
 
+/* Standard-Browserverhalten für das <header>-Tag explizit gesetzt –
+   reine Absicherung, falls ein Browser es anders interpretiert. */
 header {
     display: block;
     unicode-bidi: isolate;
 }
 
 .header {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    width: 100%;
-    background-color: var(--main-red-color);
-    height: 80px;
-    position: sticky;
-    top: 0;
+    display: flex;                          /* Flexbox, um die Kinderelemente nebeneinander in eine Reihe zu legen */
+    align-items: center;                    /* zentriert die Inhalte vertikal in der Leiste */
+    justify-content: center;                /* zentriert den Inhaltsblock horizontal */
+    width: 100%;                            /* Header spannt über die volle Seitenbreite */
+    background-color: var(--main-red-color);/* die rote Markenfarbe */
+    height: 80px;                           /* feste Höhe für eine gleichbleibende Kopfleiste */
+    position: sticky;                       /* Header bleibt beim Scrollen oben "kleben" */
+    top: 0;                                 /* klebt exakt an der Oberkante (nötig für sticky) */
+    z-index: 2;                             /* liegt über dem restlichen Inhalt, damit nichts drüber scrollt */
 }
 
 .header-content {
-    display: flex;
-    align-items: center;
-    width: 66%;
+    display: flex;          /* innere Reihe: Titel, Suche, Buttons nebeneinander */
+    align-items: center;    /* alles vertikal mittig */
+    width: 66%;             /* Inhalt nutzt nur 66% der Breite = zentrierte "Spalte" wie bei vielen Seiten */
+    max-width: 100%;        /* aber nie breiter als der Bildschirm (Sicherheitsgrenze) */
+    padding: 0 16px;        /* etwas Luft links/rechts, damit Inhalt nicht am Rand klebt */
 }
 
-.headername {
+/* Seitentitel "KÖLN ESSENMEILE". Auf der Startseite ein <h1>, daher: */
+#headername {
+    color: white;           /* weiße Schrift auf rotem Header */
+    font-size: 23px;        /* gut sichtbare, aber nicht überladene Titelgröße */
+    cursor: pointer;        /* Hand-Cursor signalisiert: anklickbar (führt zur Startseite) */
+    margin: 0;              /* h1 hat standardmäßig großen Außenabstand – den entfernen wir, sonst verschiebt es den Header */
+    font-weight: normal;    /* h1 ist standardmäßig fett – wir wollen aber die normale Optik beibehalten */
+}
+
+/* Dark-/Light-Mode-Umschaltbutton (Sonne/Mond) */
+.darkmode-toggle {
+    background: none;       /* kein Button-Hintergrund – soll dezent in der Leiste sitzen */
     color: white;
-    font-size: 23px;
-    font-family: Verdana, sans-serif;
-    cursor: pointer;
+    border: none;           /* Standard-Button-Rahmen entfernen */
+    border-radius: 20px;    /* runde Form für den Hover-Effekt */
+    padding: 6px 14px;      /* Klickfläche vergrößern, damit man ihn leicht trifft */
+    cursor: pointer;        /* signalisiert Klickbarkeit */
+    font-size: 15px;
+    display: flex;          /* zentriert das Icon sauber */
+    align-items: center;
+    gap: 6px;               /* Abstand falls Icon + Text nebeneinander stehen */
+    transition: background-color 0.3s ease; /* sanftes Aufleuchten beim Hover */
 }
 
-.darkmode-toggle {}
+.darkmode-toggle:hover {
+    background-color: rgba(255, 255, 255, 0.2); /* leichter heller Schleier beim Überfahren als visuelles Feedback */
+}
 
+/* "+"-Button zum Anlegen eines neuen Posts */
 #new-post-button {
     background: none;
     color: white;
-    border: white 1px solid;
-    border-radius: 5px;
+    border: none;
+    border-radius: 50%;     /* 50% = perfekter Kreis */
+    width: 36px;            /* feste Breite/Höhe, damit der Kreis rund bleibt */
+    height: 36px;
     cursor: pointer;
-    transition: background-color 0.4s ease, color 0.4s ease;
-    font-size: 17px;
-    font-family: Verdana, sans-serif;
+    font-size: 22px;        /* großes "+" Zeichen */
+    line-height: 1;         /* verhindert, dass das Zeichen vertikal verrutscht */
+    display: flex;          /* zentriert das "+" exakt in der Mitte des Kreises */
+    align-items: center;
+    justify-content: center;
+    transition: background-color 0.3s ease, transform 0.2s ease; /* animiert Hintergrund + Drehung beim Hover */
+    flex-shrink: 0;         /* Button darf nicht schrumpfen, wenn der Platz eng wird */
 }
 
-#new-post-button:hover {}
+/* Das Hovern des Mauszeigers wird vom Browser selber erkannt. */
+#new-post-button:hover {
+    background-color: rgba(255, 255, 255, 0.2); /* heller Schleier als Feedback */
+    transform: rotate(90deg);                   /* "+" dreht sich zu einem "x"-Eindruck = spielerisches Detail */
+}
 
+/* Abstand zwischen "+"-Button und Theme-Button. */
+#theme-toggle {
+    margin-left: 40px;
+}
+
+.search-wrapper {
+    flex-grow: 1;           /* nimmt den restlichen freien Platz in der Leiste ein und schiebt so die Buttons nach rechts */
+    display: flex;
+    justify-content: center;/* zentriert das Suchfeld innerhalb seines Bereichs */
+    padding: 0 16px;        /* etwas Abstand zu Titel und Buttons */
+}
+
+.search-input {
+    width: 100%;            /* füllt seinen Wrapper aus ... */
+    max-width: 400px;       /* ... aber wird nie breiter als 400px, sonst zu dominant */
+    padding: 6px 14px;      /* Innenabstand, damit der Text nicht am Rand klebt */
+    border: none;           /* kein harter Rahmen – soll weich in die Leiste passen */
+    border-radius: 20px;    /* runde "Pillen"-Form */
+    font-size: 15px;
+    background-color: rgba(255,255,255,0.2); /* leicht heller, halbtransparenter Kasten auf dem Rot */
+    color: white;           /* weiße Eingabeschrift */
+    outline: none;          /* entfernt den blauen Standard-Fokusrahmen (wir lösen den Fokus selbst, s.u.) */
+    transition: background-color 0.3s ease;  /* sanfter Übergang beim Fokussieren */
+}
+
+.search-input::placeholder {
+    color: rgba(255,255,255,0.7); /* Platzhaltertext etwas blasser als echte Eingabe */
+}
+
+.search-input:focus {
+    background-color: rgba(255,255,255,0.35); /* beim Anklicken etwas heller = sichtbares Feedback, dass das Feld aktiv ist */
+}
+
+body.dark-mode .search-input {
+    background-color: rgba(255,255,255,0.15); /* im Dark Mode minimal dezenter */
+    color: white;
+}
+
+/* Hinweistext "Keine Ergebnisse", wenn die Suche nichts findet */
+.search-no-results {
+    color: var(--secundary-black-text-color); /* gedämpftes Grau – ist nur ein Hinweis, kein Inhalt */
+    text-align: center;     /* zentriert auf der Seite */
+    margin-top: 40px;       /* Abstand nach oben, damit es nicht direkt unter dem Header klebt */
+}
+
+body.dark-mode .search-no-results {
+    color: var(--white-text-color); /* im Dark Mode hell, damit lesbar */
+}
+
+/* Leerraum-Element, das per flex-grow den Theme-Button auf der Detailseite
+   nach rechts schiebt (dort gibt es keine Suche, die das übernehmen könnte). */
 .toggle-spacer {
     flex-grow: 1;
 }
 
-/* Main Content CSS */
+
+/* ============================================================
+   HAUPTBEREICH (Startseite)
+   ============================================================ */
 
 .main-content {
-    display: flex;
+    display: flex;          /* Flexbox-Spalte, um Hero und Grid untereinander zu stapeln */
     justify-content: center;
-    align-items: center;
-    flex-direction: column;
+    align-items: center;    /* zentriert die Kinder horizontal – dadurch brauchen Hero/Grid keine eigene Zentrierung */
+    flex-direction: column; /* untereinander statt nebeneinander */
     width: 100%;
-    height: 100%;
+    padding-top: 40px;      /* Abstand unter dem Header (ersetzt das frühere leere Spacer-Div) */
 }
 
-.top-spacer {
-    height: 100px;
-    width: 100%;
-}
 
-.header-content-spacer {
-    height: 40px;
-    width: 100%;
-}
-
-.entry-toggle-spacer {
-    width: 40px;
-}
-
-/* Normale Karte CSS */
+/* ============================================================
+   NORMALE KARTE (im Grid)
+   ============================================================ */
 
 .card1 {
-    transition: background-color 0.4s ease, color 0.4s ease;
-    height: 350px;
-    background-color: var(--secundary-bg-white-color);
-    box-shadow: rgba(0, 0, 0, 0.35) 0 5px 15px;
-    overflow: hidden;
-}
-
-.card1.dark-mode {
-    background-color: var(--secundary-bg-dark-mode);
-    color: var(--white-text-color);
-}
-
-.card-image {
-    width: 100%;
-    height: 200px;
-    background-color: red;
+    transition: background-color 0.4s ease, color 0.4s ease; /* sanfter Farbwechsel bei Light/Dark */
+    background-color: var(--secundary-bg-white-color);       /* leicht abgesetzter Kartenhintergrund */
+    box-shadow: rgba(0, 0, 0, 0.35) 0 5px 15px;              /* Schatten gibt der Karte räumliche Tiefe (schwebt über der Seite) */
+    border-radius: 12px;    /* gleichmäßig abgerundete Ecken (feste px = überall identisch, anders als prozentual) */
+    overflow: hidden;       /* schneidet Inhalt an den abgerundeten Ecken sauber ab */
+    cursor: pointer;        /* signalisiert: ganze Karte ist anklickbar (führt zum Post) */
 }
 
 .card-body {
-    padding: 15px;
-    font-family: Verdana, sans-serif;
+    padding: 15px;          /* Innenabstand, damit Text nicht am Kartenrand klebt */
+    overflow-wrap: anywhere;/* bricht auch sehr lange Wörter um, damit sie nicht aus der Karte herauslaufen */
 }
 
 .card-body h2 {
     font-size: 1.2rem;
     color: var(--black-text-color);
-    border-bottom: 1px solid var(--secundary-black-text-color);
-    padding-bottom: 10px;
+    border-bottom: 1px solid var(--secundary-black-text-color); /* dünne Trennlinie zwischen Titel und Beschreibung */
+    padding-bottom: 10px;   /* Abstand zwischen Titel und der Linie */
 }
 
 .card-body p {
     font-size: 1rem;
-    color: var(--secundary-black-text-color);
+    color: var(--secundary-black-text-color); /* gedämpfte Farbe – Beschreibung ist Nebentext */
 }
 
-.grid-container {
-    width: 85%;
-}
-
+/* Das Grid, in das JavaScript die Karten einfügt. */
 #posts-container {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(400px, 415px));
-    width: 100%;
-    grid-gap: 20px;
-    cursor: pointer;
+    display: grid;          /* CSS Grid für ein flexibles, mehrspaltiges Layout */
+    /* auto-fit + minmax = die wohl wichtigste Zeile: Karten sind mind. 400px breit,
+       dürfen aber wachsen (1fr). Passen mehrere nebeneinander, entstehen automatisch
+       mehr Spalten; wird es eng, rutschen sie untereinander. -> responsiv OHNE extra Media Query.
+       min(400px, 100%) verhindert, dass eine Karte auf schmalen Handys breiter als der Schirm wird. */
+    grid-template-columns: repeat(auto-fit, minmax(min(400px, 100%), 1fr));
+    width: 85%;             /* Grid nutzt 85% der Breite – Rand links/rechts wirkt aufgeräumter */
+    max-width: 100%;        /* nie breiter als der Bildschirm */
+    grid-gap: 20px;         /* gleichmäßiger Abstand zwischen den Karten */
+    margin-top: 100px;      /* großer Abstand zur Hero-Karte darüber (ersetzt das frühere Spacer-Div) */
 }
 
-/* Hero Karte CSS */
 
-.hero-container {
+/* ============================================================
+   HERO-KARTE (oberster, hervorgehobener Post)
+   ============================================================ */
+
+/* Einhängepunkt, in den JavaScript die Hero-Karte rendert.
+   Zentriert seine eine Karte über die volle Breite. */
+#hero-container {
     display: flex;
     justify-content: center;
     align-items: center;
     width: 100%;
-    cursor: pointer;
 }
 
 .hero-card {
     display: flex;
-    width: 1000px;
-    height: 450px;
-    border-radius: 20px;
+    flex-direction: column; /* Inhalt vertikal gestapelt */
+    justify-content: center;
+    width: min(1000px, 95%);/* max. 1000px breit, auf kleinen Schirmen 95% – so bleibt sie immer angenehm breit */
+    border-radius: 20px;    /* stärker abgerundet = wirkt wie ein "Aushängeschild" */
     background-color: var(--secundary-bg-white-color);
-    box-shadow: rgba(0, 0, 0, 0.35) 0 5px 15px;
+    box-shadow: rgba(0, 0, 0, 0.35) 0 5px 15px; /* Schatten für Tiefe */
     transition: background-color 0.4s ease, color 0.4s ease;
-    overflow: hidden;
-}
-
-.hero-card.dark-mode {
-    background-color: var(--secundary-bg-dark-mode);
-    color: var(--white-text-color);
-}
-
-.hero-image {
-    width: 60%;
-    background-color: red;
+    overflow: hidden;       /* Inhalt an den runden Ecken abschneiden */
+    cursor: pointer;        /* ganze Hero-Karte ist anklickbar */
 }
 
 .hero-body {
-    padding: 15px;
-    font-family: Verdana, sans-serif;
+    padding: 40px;          /* großzügiger Innenabstand – betont, dass es der Hauptbeitrag ist */
+    overflow-wrap: anywhere;/* lange Wörter umbrechen statt überlaufen lassen */
 }
 
 .hero-body h2 {
-    font-size: 1.6rem;
+    font-size: 1.6rem;      /* größer als normale Karten, da hervorgehoben */
     color: var(--black-text-color);
     border-bottom: 1px solid var(--secundary-black-text-color);
     padding-bottom: 10px;
 }
 
 .hero-body p {
-    font-size: 1.4rem;
+    font-size: 1.4rem;      /* ebenfalls größer als bei normalen Karten */
     color: var(--secundary-black-text-color);
 }
 
-/* Pop-Up CSS */
+
+/* ============================================================
+   POP-UP / MODAL (Neuer Post, Bearbeiten, Löschen)
+   ============================================================ */
 
 .pop-up {
-    width: 100%;
-    position: fixed;
-    z-index: 1;
+    position: fixed;        /* bleibt fest im Bildschirm, scrollt NICHT mit – typisch für Overlays */
+    inset: 0;               /* Kurzform für top/right/bottom/left: 0 -> füllt den GANZEN Viewport (auch die Höhe!) */
+    z-index: 1;             /* liegt über dem Seiteninhalt */
+    padding-top: 80px;      /* schiebt die Karte unter den 80px hohen Header, der sichtbar bleiben soll */
+    background-color: rgba(0, 0, 0, 0.2); /* leichte Abdunklung des Hintergrunds = Fokus aufs Popup */
+    backdrop-filter: blur(8px);           /* verschwommener Hintergrund = moderner "Milchglas"-Effekt */
 }
 
-.form-container {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
+/* Hilfsklasse: wird per JS am <body> gesetzt, wenn ein Popup offen ist,
+   damit der Hintergrund nicht mitscrollt, während man im Popup scrollt. */
+.no-scroll {
+    overflow: hidden;
 }
 
 .pop-up-card {
     display: flex;
-    flex-direction: column;
+    flex-direction: column; /* Kopf, Inhalt und Footer untereinander */
     transition: background-color 0.4s ease, color 0.4s ease;
-    width: 50%;
-    height: 600px;
+    width: min(50%, 600px); /* halbe Breite, aber höchstens 600px – sonst wirkt das Formular auf großen Schirmen zu breit */
+    max-width: 95vw;        /* nie breiter als 95% der Bildschirmbreite */
+    height: auto;           /* Höhe richtet sich nach dem Inhalt */
+    max-height: 90vh;       /* aber höchstens 90% der Bildschirmhöhe ... */
+    overflow-y: auto;       /* ... und wird bei mehr Inhalt innen scrollbar, statt den Schirm zu sprengen */
+    overscroll-behavior: contain; /* verhindert, dass beim Scroll-Ende des Popups die ganze Seite mitscrollt */
     border-radius: 20px;
     background-color: var(--secundary-bg-white-color);
-    box-shadow: rgba(0, 0, 0, 0.35) 0 5px 15px;
-    overflow: hidden;
-    padding: 20px;
-}
-
-.new-post-header {
-    width: 100%;
-    top: 0;
+    box-shadow: rgba(0, 0, 0, 0.35) 0 5px 15px; /* Schatten hebt die Karte vom abgedunkelten Hintergrund ab */
+    padding: 20px;          /* Innenabstand für den gesamten Formularinhalt */
 }
 
 .new-post-header-title {
-    font-size: 1.6rem;
-    font-weight: bold;
-    font-family: Veradana, sans-serif;
-    top: 0;
+    font-size: 1.6rem;      /* große Überschrift "Neuer Post" / "Bearbeiten" / "Löschen" */
+    font-weight: bold;      /* fett, da es die Hauptüberschrift des Popups ist */
     padding: 10px;
 }
 
 .pop-up-content {
-    margin: auto 0;
+    margin: auto 0;         /* schiebt den Inhalt vertikal in die Mitte, falls Platz übrig ist */
 }
 
 .pop-up-footer {
-    margin-left: auto;
+    margin-left: auto;      /* schiebt die Buttons (Abbrechen/Speichern) nach rechts */
     padding: 10px;
 }
 
 .label {
-    font-size: 1.25rem;
-    font-family: sans-serif;
-    margin: 5px 0;
+    font-size: 1.25rem;     /* gut lesbare Beschriftung der Felder */
+    margin: 5px 0;          /* kleiner Abstand ober-/unterhalb zur Trennung von Feld und Label */
 }
 
 .input-field {
-    font-family: sans-serif;
     font-size: 1rem;
-    border: 1px solid var(--brown-red-color);
+    border: 1px solid var(--brown-red-color); /* dezenter Rahmen in Markenfarbe */
     border-radius: 5px;
-    width: 100%;
+    width: 100%;            /* Feld füllt die ganze verfügbare Breite – einheitliche Optik */
     transition: background-color 0.4s ease, color 0.4s ease;
-    resize: none;
+    resize: none;           /* verhindert, dass der Nutzer Textareas frei zieht und das Layout zerstört */
 }
 
 
-/* Detail CSS */
+/* ============================================================
+   DETAILSEITE (einzelner Post)
+   ============================================================ */
+
+/* Rahmen um das Titelbild – hält ein festes Seitenverhältnis,
+   damit verschieden große Bilder nicht das Layout springen lassen. */
+.detail-hero-frame {
+    width: 83.333333%;      /* entspricht 5/6 der Kartenbreite – gleiche Breite wie Titel/Text darunter */
+    aspect-ratio: 16 / 9;   /* festes 16:9-Verhältnis, unabhängig von der Bildgröße */
+    margin-top: 20px;
+    margin-bottom: 10px;
+    border-radius: 12px;
+    overflow: hidden;       /* schneidet das Bild an den runden Ecken ab */
+}
+
+.detail-hero-image {
+    width: 100%;            /* füllt den Rahmen in der Breite ... */
+    height: 100%;           /* ... und in der Höhe */
+    object-fit: contain;    /* zeigt das GANZE Bild ohne Beschnitt (passt es in den Rahmen ein) */
+    display: block;         /* entfernt den kleinen Zwischenraum, den Bilder als inline-Element haben */
+}
 
 .detail-main-container {
     display: flex;
     flex-direction: column;
-    align-items: center;
+    align-items: center;    /* zentriert die Detail-Karte horizontal */
     justify-content: center;
     width: 100%;
 }
@@ -340,79 +470,91 @@ header {
 .detail-container {
     display: flex;
     flex-direction: column;
-    align-items: center;
+    align-items: center;    /* zentriert Bild, Titel und Text innerhalb der Karte */
     justify-content: center;
     background-color: var(--secundary-bg-white-color);
-    width: 70%;
+    width: min(70%, 100%);  /* 70% Breite, aber nie mehr als der Bildschirm */
+    max-width: 95vw;
     border-radius: 20px;
     box-shadow: rgba(0, 0, 0, 0.35) 0 5px 15px;
-    margin-top: 40px;
+    margin-top: 40px;       /* Abstand zum Header */
     padding: 15px;
     transition: background-color 0.4s ease, color 0.4s ease;
 }
 
 .detail-title {
-    font-size: var(--detail-font-size-title);
+    font-size: var(--detail-font-size-title); /* große Überschrift – aus zentraler Variable */
     font-weight: bold;
-    font-family: "Times New Roman", sans-serif;
     margin: 0;
-    width: 83.333333%;
-    border-bottom: 1px solid var(--secundary-black-text-color);
+    width: 83.333333%;      /* gleiche Breite wie Bild und Text -> bündige linke Kante */
+    border-bottom: 1px solid var(--secundary-black-text-color); /* Trennlinie unter dem Titel */
     padding-bottom: 10px;
+    overflow-wrap: anywhere;/* lange Titel umbrechen statt überlaufen */
+}
+
+/* "Zuletzt bearbeitet am ..." / "Veröffentlicht am ..." */
+.detail-meta {
+    width: 83.333333%;      /* bündig mit Titel/Text */
+    font-size: 0.9rem;      /* klein – ist nur eine Zusatzinfo */
+    color: var(--secundary-black-text-color); /* gedämpft, da Nebeninfo */
+    margin-top: 10px;
 }
 
 .detail-content {
     font-size: var(--detail-font-size-content);
-    font-family: sans-serif;
-    margin: 20px 0 0;
-    width: 83.333333%;
-    line-height: 1.3;
+    margin: 20px 0 0;       /* Abstand nach oben zum Titel/Meta */
+    width: 83.333333%;      /* bündig mit Titel */
+    line-height: 1.3;       /* etwas mehr Zeilenhöhe = besser lesbarer Fließtext */
+    overflow-wrap: anywhere;
 }
 
+/* Leiste mit "Bearbeiten" und "Löschen" am unteren Rand der Detail-Karte */
 .detail-card-footer {
-    position: sticky;
-    bottom: 0;
+    position: sticky;       /* bleibt am unteren Rand sichtbar, auch bei langem Text */
+    bottom: 0;              /* klebt an der Unterkante (nötig für sticky) */
     width: 100%;
-    background-color: color-mix(in srgb, var(--secundary-bg-white-color) 30%, transparent);
+    background-color: color-mix(in srgb, var(--secundary-bg-white-color) 30%, transparent); /* halbtransparent, damit Text durchscheint */
     padding: 10px;
     display: flex;
-    justify-content: end;
+    justify-content: end;   /* schiebt die Buttons nach rechts */
     align-items: center;
-    gap: 10px;
-    backdrop-filter: blur(10px);
+    gap: 10px;              /* gleichmäßiger Abstand zwischen den Buttons */
+    backdrop-filter: blur(10px); /* verschwimmt den durchscheinenden Text = sauberer "Glas"-Effekt */
     transition: background-color 0.4s ease, color 0.4s ease;
 }
 
+/* Allgemeiner Button-Stil (Speichern, Abbrechen, Bearbeiten, Löschen ...) */
 .button {
-    background-color: var(--main-red-color);
+    background-color: var(--main-red-color); /* Markenfarbe */
     color: white;
     border: none;
-    padding: 10px 20px;
-    margin: 0 5px;
+    padding: 10px 20px;     /* großzügige Klickfläche */
+    margin: 0 5px;          /* kleiner Abstand zwischen mehreren Buttons */
     border-radius: 5px;
-    cursor: pointer;
+    cursor: pointer;        /* signalisiert Klickbarkeit */
     transition: background-color 0.4s ease, color 0.4s ease;
     font-size: 16px;
-    font-family: Verdana, sans-serif;
 }
 
-/* All-Use CSS */
 
-.squircle-corners {
-    corner-shape: squircle;
-    border-radius: 10%;
-}
+/* ============================================================
+   HILFSKLASSEN (überall wiederverwendbar)
+   Diese kleinen "Utility"-Klassen kombiniert man im HTML, statt
+   für jedes Element eine eigene Regel zu schreiben.
+   ============================================================ */
 
 .display-none {
-    display: none;
+    display: none;          /* blendet ein Element komplett aus (Popups im Ausgangszustand) */
 }
 
+/* Wird per JS hinzugefügt, um ein verstecktes Popup anzuzeigen UND mittig zu zentrieren. */
 .display-flex {
     display: flex;
     justify-content: center;
     align-items: center;
 }
 
+/* Stapelt Label + Eingabefeld untereinander (eine Formularzeile). */
 .display-flex-column {
     display: flex;
     flex-direction: column;
@@ -420,17 +562,183 @@ header {
 }
 
 .padding-10 {
-    padding: 10px;
+    padding: 10px;          /* einheitlicher Innenabstand für Formularzeilen */
 }
 
+/* Feste Höhen für Eingabefelder – als Utility, damit man sie im HTML zuweisen kann. */
 .height-30 {
-    height: 30px;
+    height: 30px;           /* einzeiliges Textfeld (Titel) */
 }
 
 .height-80 {
-    height: 80px;
+    height: 80px;           /* kleines Textfeld (Beschreibung) */
 }
 
 .height-200 {
-    height: 200px;
+    height: 200px;          /* großes Textfeld (Inhalt) */
+}
+
+
+/* ============================================================
+   RESPONSIVE MEDIA QUERIES
+   Überschreiben einzelne Werte ab bestimmten Bildschirmbreiten,
+   damit die Seite auf Tablet und Handy gut aussieht.
+   ============================================================ */
+
+/* --- Tablet: bis 900px Breite --- */
+@media (max-width: 900px) {
+    .header-content {
+        width: 100%;        /* Header nutzt die volle Breite, da 66% auf Tablets zu schmal wären */
+    }
+
+    #headername {
+        font-size: 18px;    /* kleinerer Titel, damit er neben Suche/Buttons passt */
+    }
+
+    .hero-card {
+        flex-direction: column;
+        width: 95%;         /* breiter (95%), da auf Tablets mehr Platz genutzt werden soll */
+        height: auto;
+    }
+
+    .hero-body h2 {
+        font-size: 1.3rem;  /* kleinere Hero-Schrift auf kleineren Schirmen */
+    }
+
+    .hero-body p {
+        font-size: 1.1rem;
+    }
+
+    #posts-container {
+        width: 95%;         /* Grid breiter, damit Karten nicht zu schmal werden */
+    }
+
+    .detail-container {
+        width: 90%;         /* Detail-Karte breiter nutzen */
+    }
+
+    .detail-hero-frame {
+        width: 95%;         /* Bild breiter, passend zur breiteren Karte */
+    }
+
+    .detail-title {
+        font-size: 2rem;    /* kleinere Titelschrift */
+        width: 95%;
+    }
+
+    .detail-content {
+        width: 95%;
+    }
+
+    .pop-up-card {
+        width: 80%;         /* Popup breiter, da 50% auf Tablets zu schmal wäre */
+    }
+}
+
+/* --- Smartphone: bis 600px Breite --- */
+@media (max-width: 600px) {
+    .header {
+        height: auto;       /* feste 80px aufheben – der Header darf jetzt umbrechen und höher werden */
+        padding: 10px 0;
+    }
+
+    .header-content {
+        flex-wrap: wrap;    /* erlaubt den Elementen, in eine zweite Zeile zu rutschen, wenn der Platz fehlt */
+        gap: 8px;           /* Abstand zwischen den umgebrochenen Elementen */
+        padding: 0 12px;
+    }
+
+    #headername {
+        font-size: 16px;    /* noch kleiner auf dem Handy */
+    }
+
+    #new-post-button,
+    #theme-toggle {
+        font-size: 14px;    /* kleinere Buttons, um Platz zu sparen */
+        padding: 4px 8px;
+    }
+
+    #theme-toggle {
+        margin-left: 10px;  /* kleinerer Abstand als am Desktop (40px), da der Platz knapp ist */
+    }
+
+    .hero-card {
+        flex-direction: column;
+        width: 95%;
+        height: auto;
+        border-radius: 12px;/* etwas weniger Rundung auf kleinen Schirmen */
+    }
+
+    .hero-body {
+        padding: 10px;      /* weniger Innenabstand, um Platz zu sparen */
+    }
+
+    .hero-body h2 {
+        font-size: 1.1rem;
+    }
+
+    .hero-body p {
+        font-size: 1rem;
+    }
+
+    #posts-container {
+        grid-template-columns: 1fr; /* nur noch EINE Spalte – Karten untereinander auf dem Handy */
+        width: 95%;
+        margin-top: 40px;   /* kleinerer Abstand zur Hero-Karte als am Desktop (100px) */
+    }
+
+    .card1 {
+        height: auto;       /* Karten so hoch wie ihr Inhalt */
+    }
+
+    .detail-container {
+        width: 95%;
+        margin-top: 20px;   /* weniger Abstand zum Header */
+        border-radius: 12px;
+    }
+
+    .detail-hero-frame {
+        width: 95%;
+    }
+
+    .detail-title {
+        font-size: 1.5rem;  /* deutlich kleinerer Titel auf dem Handy */
+        width: 100%;        /* volle Breite nutzen */
+    }
+
+    .detail-content {
+        font-size: 1rem;
+        width: 100%;
+    }
+
+    .pop-up {
+        padding-top: 64px;  /* kleinerer Versatz, da der Header auf dem Handy niedriger ist */
+    }
+
+    .pop-up-card {
+        width: 95%;         /* Popup nutzt fast die volle Breite */
+        max-width: 95vw;
+        max-height: 100%;   /* darf die volle Höhe nutzen, da auf dem Handy wenig Platz ist */
+        border-radius: 12px;
+        padding: 12px;      /* weniger Innenabstand */
+    }
+
+    .new-post-header-title {
+        font-size: 1.25rem; /* kleinere Popup-Überschrift */
+        padding: 4px;
+    }
+
+    .padding-10 {
+        padding: 6px;       /* engere Formularzeilen, um Platz zu sparen */
+    }
+
+    /* Eingabefelder werden auf dem Handy flexibel kleiner: clamp(min, ideal, max).
+       So passen Titel-/Inhaltsfelder auch auf kleine Schirme, ohne zu winzig zu werden. */
+    .height-80 {
+        height: clamp(50px, 10dvh, 80px);
+    }
+
+    .height-200 {
+        height: clamp(90px, 22dvh, 200px);
+    }
 }
