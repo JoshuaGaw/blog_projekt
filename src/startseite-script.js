@@ -35,38 +35,31 @@ function getCards() {
         .then(data => {
             if (!data || data.length === 0) return;
             const firstElement = data[0];
-            const card = document.createElement('div');
-            card.classList.add('hero-card');
-            card.dataset.id = firstElement.id;
-            card.innerHTML = `
+            const heroCard = document.createElement('div');
+            heroCard.classList.add('hero-card');
+            heroCard.innerHTML = `
                 <div class="hero-body">
                 <h2>${firstElement.title}</h2>
                 <p>${firstElement.description}</p>
                 </div>
             `;
-            heroContainer.appendChild(card);
-            card.addEventListener('click', () => {
+            heroContainer.appendChild(heroCard);
+            heroCard.addEventListener('click', () => {
                 globalThis.location.href = `detailseite.php?id=${firstElement.id}`;
             });
 
             data.slice(1).forEach(post => {
                 const card = document.createElement('div');
                 card.classList.add('card1');
-                card.dataset.id = post.id;
                 card.innerHTML = `
-            <div class="card-body">
-            <h2>${post.title}</h2>
-            <p>${post.description}</p>
-            </div>
-        `;
+                    <div class="card-body">
+                    <h2>${post.title}</h2>
+                    <p>${post.description}</p>
+                    </div>
+                `;
                 postsContainer.appendChild(card);
-            })
-
-            const cards = document.querySelectorAll('.card1');
-            cards.forEach(card => {
                 card.addEventListener('click', () => {
-                    const postId = card.dataset.id;
-                    globalThis.location.href = `detailseite.php?id=${postId}`;
+                    globalThis.location.href = `detailseite.php?id=${post.id}`;
                 });
             });
         });
@@ -86,7 +79,6 @@ function searchCards(query) {
             data.forEach(post => {
                 const card = document.createElement('div');
                 card.classList.add('card1');
-                card.dataset.id = post.id;
                 card.innerHTML = `
                     <div class="card-body">
                     <h2>${post.title}</h2>

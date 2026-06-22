@@ -21,7 +21,7 @@ $post = mysqli_fetch_assoc($result);
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title><?php echo $post['title']; ?></title>
+    <title><?php echo htmlspecialchars($post['title']); ?></title>
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
@@ -41,16 +41,16 @@ $post = mysqli_fetch_assoc($result);
         <div class="pop-up-content">
             <div class="display-flex-column padding-10">
                 <label class="label" for="detail-edit-title">Titel (max. 32 Zeichen)</label>
-                <input type="text" id="detail-edit-title" class="input-field height-30" value="<?php echo $post['title']; ?>" maxlength="32" required>
+                <input type="text" id="detail-edit-title" class="input-field height-30" value="<?php echo htmlspecialchars($post['title']); ?>" maxlength="32" required>
                 <div id="detail-edit-title-error" class="image-error" style="display:none;"></div>
             </div>
             <div class="display-flex-column padding-10">
                 <label class="label" for="detail-edit-description">Beschreibung (max. 180 Zeichen)</label>
-                <textarea id="detail-edit-description" class="input-field height-80" maxlength="180"><?php echo $post['description']; ?></textarea>
+                <textarea id="detail-edit-description" class="input-field height-80" maxlength="180"><?php echo htmlspecialchars($post['description']); ?></textarea>
             </div>
             <div class="display-flex-column padding-10">
                 <label class="label" for="detail-edit-content">Inhalt (max. 2000 Zeichen)</label>
-                <textarea id="detail-edit-content" class="input-field height-200" maxlength="2000"><?php echo $post['content']; ?></textarea>
+                <textarea id="detail-edit-content" class="input-field height-200" maxlength="2000"><?php echo htmlspecialchars($post['content']); ?></textarea>
             </div>
             <div class="display-flex-column padding-10">
                 <label class="label" for="detail-edit-image">Bild ändern (max. 5 MB)</label>
@@ -88,7 +88,7 @@ $post = mysqli_fetch_assoc($result);
                 <img class="detail-hero-image" src="<?php echo htmlspecialchars($post['cover_image']); ?>" alt="<?php echo htmlspecialchars($post['title']); ?>">
             </div>
         <?php endif; ?>
-        <h1 class="detail-title"><?php echo $post['title']; ?></h1>
+        <h1 class="detail-title"><?php echo htmlspecialchars($post['title']); ?></h1>
         <?php if (!empty($post['created_at'])):
             $created = new DateTime($post['created_at']);
             $updated = new DateTime($post['updated_at']);
@@ -99,7 +99,7 @@ $post = mysqli_fetch_assoc($result);
                 <?php echo $wasEdited ? 'Zuletzt bearbeitet am ' : 'Veröffentlicht am '; ?><?php echo $metaDate; ?>
             </div>
         <?php endif; ?>
-        <p class="detail-content"><?php echo $post['content']; ?></p>
+        <p class="detail-content"><?php echo htmlspecialchars($post['content']); ?></p>
         <div class="detail-card-footer">
             <button id="detail-edit-button" class="button">Bearbeiten</button>
             <button id="detail-delete-button" class="button" data-id="<?php echo $post['id']; ?>">Löschen</button>
