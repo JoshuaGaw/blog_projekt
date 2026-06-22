@@ -14,6 +14,16 @@
     border: 1px solid #fecaca;/* dünner Rahmen grenzt die Box sauber vom Hintergrund ab */
 }
 
+/* Bildvorschau in den Pop-ups (Neu anlegen / Bearbeiten).
+   Wird per JS via display:block sichtbar, sobald der User ein Bild ausgewählt hat. */
+.image-preview {
+    display: none;            /* standardmäßig versteckt, JS schaltet sichtbar */
+    margin-top: 8px;          /* kleiner Abstand zum File-Input darüber */
+    max-height: 150px;        /* begrenzt die Höhe, damit das Popup nicht aufgeblasen wird */
+    border-radius: 8px;       /* leicht abgerundete Ecken, passend zum restlichen Design */
+    object-fit: cover;        /* Bild füllt den Rahmen ohne Verzerrung */
+}
+
 /* :root = die oberste Ebene des Dokuments. Hier definieren wir CSS-Variablen
    einmal zentral. Vorteil: Wollen wir z.B. das Rot ändern,
    tun wir es nur hier an einer Stelle statt an 20 Stellen im Code. */

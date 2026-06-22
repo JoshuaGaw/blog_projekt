@@ -56,7 +56,7 @@ $post = mysqli_fetch_assoc($result);
                 <label class="label" for="detail-edit-image">Bild ändern (max. 5 MB)</label>
                 <input type="file" id="detail-edit-image" class="input-field" accept="image/*">
                 <div id="detail-edit-image-error" class="image-error" style="display:none;"></div>
-                <img id="detail-edit-image-preview" src="" alt="Vorschau" style="display:none; margin-top:8px; max-height:150px; border-radius:8px; object-fit:cover;">
+                <img id="detail-edit-image-preview" class="image-preview" src="" alt="Vorschau">
             </div>
         </div>
         <div class="pop-up-footer">
