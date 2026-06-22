@@ -22,13 +22,13 @@
 
     /* Light Mode Farben */
     --bg-white-color: #fff8f6;            /* Seitenhintergrund hell */
-    --secundary-bg-white-color: #f5edeb;  /* Hintergrund von Karten/Boxen (leicht abgesetzt) */
+    --secondary-bg-white-color: #f5edeb;  /* Hintergrund von Karten/Boxen (leicht abgesetzt) */
     --black-text-color: #1f2937;          /* dunkle Schrift für Überschriften */
-    --secundary-black-text-color: #6b7280;/* gedämpftes Grau für Nebentext/Linien */
+    --secondary-black-text-color: #6b7280;/* gedämpftes Grau für Nebentext/Linien */
 
     /* Dark Mode Farben */
     --bg-dark-mode: #1F1F1E;              /* Seitenhintergrund dunkel */
-    --secundary-bg-dark-mode: #2C2C2B;    /* Karten-Hintergrund im Dark Mode */
+    --secondary-bg-dark-mode: #2C2C2B;    /* Karten-Hintergrund im Dark Mode */
     --white-text-color: #f9fafb;          /* helle Schrift für dunklen Hintergrund */
 
     /* Weitere Akzentfarben */
@@ -79,12 +79,12 @@ body.dark-mode {
 /* Karten brauchen im Dark Mode einen eigenen, leicht helleren Hintergrund,
    damit sie sich vom dunklen Seitenhintergrund abheben. */
 body.dark-mode .card1 {
-    background-color: var(--secundary-bg-dark-mode);
+    background-color: var(--secondary-bg-dark-mode);
     color: var(--white-text-color);
 }
 
 body.dark-mode .hero-card {
-    background-color: var(--secundary-bg-dark-mode);
+    background-color: var(--secondary-bg-dark-mode);
     color: var(--white-text-color);
 }
 
@@ -95,7 +95,7 @@ body.dark-mode .hero-body h2 {
 }
 
 body.dark-mode .hero-body p {
-    color: var(--secundary-bg-white-color);
+    color: var(--secondary-bg-white-color);
 }
 
 body.dark-mode .card-body h2 {
@@ -103,11 +103,11 @@ body.dark-mode .card-body h2 {
 }
 
 body.dark-mode .card-body p {
-    color: var(--secundary-bg-white-color);
+    color: var(--secondary-bg-white-color);
 }
 
 body.dark-mode .pop-up-card {
-    background-color: var(--secundary-bg-dark-mode);
+    background-color: var(--secondary-bg-dark-mode);
 }
 
 /* Eingabefelder im Dark Mode: dunkler Hintergrund + helle Schrift,
@@ -116,17 +116,17 @@ body.dark-mode input,
 body.dark-mode textarea {
     background-color: var(--bg-dark-mode);
     color: var(--white-text-color);
-    border-color: var(--secundary-black-text-color);
+    border-color: var(--secondary-black-text-color);
 }
 
 body.dark-mode .detail-container {
-    background-color: var(--secundary-bg-dark-mode);
+    background-color: var(--secondary-bg-dark-mode);
 }
 
 body.dark-mode .detail-card-footer {
     /* color-mix mischt die dunkle Kartenfarbe mit Transparenz, damit der
        Footer halbtransparent über dem Inhalt "schwebt" (passend zum Blur). */
-    background-color: color-mix(in srgb, var(--secundary-bg-dark-mode) 30%, transparent);
+    background-color: color-mix(in srgb, var(--secondary-bg-dark-mode) 30%, transparent);
 }
 
 
@@ -253,7 +253,7 @@ body.dark-mode .search-input {
 
 /* Hinweistext "Keine Ergebnisse", wenn die Suche nichts findet */
 .search-no-results {
-    color: var(--secundary-black-text-color); /* gedämpftes Grau – ist nur ein Hinweis, kein Inhalt */
+    color: var(--secondary-black-text-color); /* gedämpftes Grau – ist nur ein Hinweis, kein Inhalt */
     text-align: center;     /* zentriert auf der Seite */
     margin-top: 40px;       /* Abstand nach oben, damit es nicht direkt unter dem Header klebt */
 }
@@ -289,7 +289,7 @@ body.dark-mode .search-no-results {
 
 .card1 {
     transition: background-color 0.4s ease, color 0.4s ease; /* sanfter Farbwechsel bei Light/Dark */
-    background-color: var(--secundary-bg-white-color);       /* leicht abgesetzter Kartenhintergrund */
+    background-color: var(--secondary-bg-white-color);       /* leicht abgesetzter Kartenhintergrund */
     box-shadow: rgba(0, 0, 0, 0.35) 0 5px 15px;              /* Schatten gibt der Karte räumliche Tiefe (schwebt über der Seite) */
     border-radius: 12px;    /* gleichmäßig abgerundete Ecken (feste px = überall identisch, anders als prozentual) */
     overflow: hidden;       /* schneidet Inhalt an den abgerundeten Ecken sauber ab */
@@ -304,13 +304,13 @@ body.dark-mode .search-no-results {
 .card-body h2 {
     font-size: 1.2rem;
     color: var(--black-text-color);
-    border-bottom: 1px solid var(--secundary-black-text-color); /* dünne Trennlinie zwischen Titel und Beschreibung */
+    border-bottom: 1px solid var(--secondary-black-text-color); /* dünne Trennlinie zwischen Titel und Beschreibung */
     padding-bottom: 10px;   /* Abstand zwischen Titel und der Linie */
 }
 
 .card-body p {
     font-size: 1rem;
-    color: var(--secundary-black-text-color); /* gedämpfte Farbe – Beschreibung ist Nebentext */
+    color: var(--secondary-black-text-color); /* gedämpfte Farbe – Beschreibung ist Nebentext */
 }
 
 /* Das Grid, in das JavaScript die Karten einfügt. */
@@ -347,7 +347,7 @@ body.dark-mode .search-no-results {
     justify-content: center;
     width: min(1000px, 95%);/* max. 1000px breit, auf kleinen Schirmen 95% – so bleibt sie immer angenehm breit */
     border-radius: 20px;    /* stärker abgerundet = wirkt wie ein "Aushängeschild" */
-    background-color: var(--secundary-bg-white-color);
+    background-color: var(--secondary-bg-white-color);
     box-shadow: rgba(0, 0, 0, 0.35) 0 5px 15px; /* Schatten für Tiefe */
     transition: background-color 0.4s ease, color 0.4s ease;
     overflow: hidden;       /* Inhalt an den runden Ecken abschneiden */
@@ -362,13 +362,13 @@ body.dark-mode .search-no-results {
 .hero-body h2 {
     font-size: 1.6rem;      /* größer als normale Karten, da hervorgehoben */
     color: var(--black-text-color);
-    border-bottom: 1px solid var(--secundary-black-text-color);
+    border-bottom: 1px solid var(--secondary-black-text-color);
     padding-bottom: 10px;
 }
 
 .hero-body p {
     font-size: 1.4rem;      /* ebenfalls größer als bei normalen Karten */
-    color: var(--secundary-black-text-color);
+    color: var(--secondary-black-text-color);
 }
 
 
@@ -402,7 +402,7 @@ body.dark-mode .search-no-results {
     overflow-y: auto;       /* ... und wird bei mehr Inhalt innen scrollbar, statt den Schirm zu sprengen */
     overscroll-behavior: contain; /* verhindert, dass beim Scroll-Ende des Popups die ganze Seite mitscrollt */
     border-radius: 20px;
-    background-color: var(--secundary-bg-white-color);
+    background-color: var(--secondary-bg-white-color);
     box-shadow: rgba(0, 0, 0, 0.35) 0 5px 15px; /* Schatten hebt die Karte vom abgedunkelten Hintergrund ab */
     padding: 20px;          /* Innenabstand für den gesamten Formularinhalt */
 }
@@ -472,7 +472,7 @@ body.dark-mode .search-no-results {
     flex-direction: column;
     align-items: center;    /* zentriert Bild, Titel und Text innerhalb der Karte */
     justify-content: center;
-    background-color: var(--secundary-bg-white-color);
+    background-color: var(--secondary-bg-white-color);
     width: min(70%, 100%);  /* 70% Breite, aber nie mehr als der Bildschirm */
     max-width: 95vw;
     border-radius: 20px;
@@ -487,7 +487,7 @@ body.dark-mode .search-no-results {
     font-weight: bold;
     margin: 0;
     width: 83.333333%;      /* gleiche Breite wie Bild und Text -> bündige linke Kante */
-    border-bottom: 1px solid var(--secundary-black-text-color); /* Trennlinie unter dem Titel */
+    border-bottom: 1px solid var(--secondary-black-text-color); /* Trennlinie unter dem Titel */
     padding-bottom: 10px;
     overflow-wrap: anywhere;/* lange Titel umbrechen statt überlaufen */
 }
@@ -496,7 +496,7 @@ body.dark-mode .search-no-results {
 .detail-meta {
     width: 83.333333%;      /* bündig mit Titel/Text */
     font-size: 0.9rem;      /* klein – ist nur eine Zusatzinfo */
-    color: var(--secundary-black-text-color); /* gedämpft, da Nebeninfo */
+    color: var(--secondary-black-text-color); /* gedämpft, da Nebeninfo */
     margin-top: 10px;
 }
 
@@ -513,7 +513,7 @@ body.dark-mode .search-no-results {
     position: sticky;       /* bleibt am unteren Rand sichtbar, auch bei langem Text */
     bottom: 0;              /* klebt an der Unterkante (nötig für sticky) */
     width: 100%;
-    background-color: color-mix(in srgb, var(--secundary-bg-white-color) 30%, transparent); /* halbtransparent, damit Text durchscheint */
+    background-color: color-mix(in srgb, var(--secondary-bg-white-color) 30%, transparent); /* halbtransparent, damit Text durchscheint */
     padding: 10px;
     display: flex;
     justify-content: end;   /* schiebt die Buttons nach rechts */
