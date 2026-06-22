@@ -20,13 +20,25 @@ if ($method === 'POST' && isset($_POST['_method'])) {
 switch ($method) {
     case 'GET': {
         if (isset($_GET['search']) && trim($_GET['search']) !== '') {
-            $search = '%' . trim($_GET['search']) . '%';
-            $stmt = mysqli_prepare($conn,
-                "SELECT * FROM posts
-             WHERE title LIKE ? OR description LIKE ? OR content LIKE ?
-             ORDER BY created_at DESC"
-            );
-            mysqli_stmt_bind_param($stmt, "sss", $search, $search, $search);
+            // Suchbegriff in einzelne Wörter zerlegen, leere Einträge filtern.
+            $words = preg_split('/\s+/', trim($_GET['search']), -1, PREG_SPLIT_NO_EMPTY);
+
+            // Pro Wort eine eigene LIKE-Klausel über alle drei Spalten.
+            // Alle Wörter müssen vorkommen (AND-Verknüpfung), Reihenfolge egal.
+            $conditions = [];
+            $params = [];
+            foreach ($words as $word) {
+                $conditions[] = '(title LIKE ? OR description LIKE ? OR content LIKE ?)';
+                $like = '%' . $word . '%';
+                $params[] = $like;
+                $params[] = $like;
+                $params[] = $like;
+            }
+            $types = str_repeat('s', count($params));
+            $sql = "SELECT * FROM posts WHERE " . implode(' AND ', $conditions) . " ORDER BY created_at DESC";
+
+            $stmt = mysqli_prepare($conn, $sql);
+            mysqli_stmt_bind_param($stmt, $types, ...$params);
             mysqli_stmt_execute($stmt);
             $result = mysqli_stmt_get_result($stmt);
         } else {
