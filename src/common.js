@@ -29,12 +29,12 @@ function validateImageFile(file) {
 // Generische Fehleranzeige
 function showError(el, msg) {
     el.textContent = msg;
-    el.style.display = 'block';
+    el.classList.remove('display-none');
 }
 
 function clearError(el) {
     el.textContent = '';
-    el.style.display = 'none';
+    el.classList.add('display-none');
 }
 
 // API-Aufruf: tarnt PUT/DELETE als POST mit _method,

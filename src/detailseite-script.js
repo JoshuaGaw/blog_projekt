@@ -100,16 +100,16 @@ editImageInput.addEventListener('change', () => {
             showError(editImageError, err);
             editImageInput.value = '';
             editImagePreview.src = '';
-            editImagePreview.style.display = 'none';
+            editImagePreview.classList.add('display-none');
             return;
         }
         clearError(editImageError);
         editImagePreview.src = URL.createObjectURL(file);
-        editImagePreview.style.display = 'block';
+        editImagePreview.classList.remove('display-none');
     } else {
         clearError(editImageError);
         editImagePreview.src = '';
-        editImagePreview.style.display = 'none';
+        editImagePreview.classList.add('display-none');
     }
 });
 

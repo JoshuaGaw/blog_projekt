@@ -42,7 +42,7 @@ $post = mysqli_fetch_assoc($result);
             <div class="display-flex-column padding-10">
                 <label class="label" for="detail-edit-title">Titel (max. 32 Zeichen)</label>
                 <input type="text" id="detail-edit-title" class="input-field height-30" value="<?php echo htmlspecialchars($post['title']); ?>" maxlength="32" required>
-                <div id="detail-edit-title-error" class="image-error" style="display:none;"></div>
+                <div id="detail-edit-title-error" class="image-error display-none"></div>
             </div>
             <div class="display-flex-column padding-10">
                 <label class="label" for="detail-edit-description">Beschreibung (max. 180 Zeichen)</label>
@@ -55,8 +55,8 @@ $post = mysqli_fetch_assoc($result);
             <div class="display-flex-column padding-10">
                 <label class="label" for="detail-edit-image">Bild ändern (max. 5 MB)</label>
                 <input type="file" id="detail-edit-image" class="input-field" accept="image/*">
-                <div id="detail-edit-image-error" class="image-error" style="display:none;"></div>
-                <img id="detail-edit-image-preview" class="image-preview" src="" alt="Vorschau">
+                <div id="detail-edit-image-error" class="image-error display-none"></div>
+                <img id="detail-edit-image-preview" class="image-preview display-none" src="" alt="Vorschau">
             </div>
         </div>
         <div class="pop-up-footer">

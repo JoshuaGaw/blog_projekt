@@ -170,16 +170,16 @@ imageInput.addEventListener('change', () => {
             showError(imageError, err);
             imageInput.value = '';
             imagePreview.src = '';
-            imagePreview.style.display = 'none';
+            imagePreview.classList.add('display-none');
             return;
         }
         clearError(imageError);
         imagePreview.src = URL.createObjectURL(file);
-        imagePreview.style.display = 'block';
+        imagePreview.classList.remove('display-none');
     } else {
         clearError(imageError);
         imagePreview.src = '';
-        imagePreview.style.display = 'none';
+        imagePreview.classList.add('display-none');
     }
 });
 
@@ -189,7 +189,7 @@ cancelButton.addEventListener('click', () => {
     contentInput.value = '';
     imageInput.value = '';
     imagePreview.src = '';
-    imagePreview.style.display = 'none';
+    imagePreview.classList.add('display-none');
     clearError(imageError);
     clearError(titleError);
     popup.classList.remove('display-flex');
