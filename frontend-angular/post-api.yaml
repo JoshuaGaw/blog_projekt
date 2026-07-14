@@ -1,0 +1,315 @@
+# OpenAPI-Spezifikation (Contract-first) für die Blog-REST-API.
+#
+# Diese Datei ist die verbindliche Quelle der Wahrheit für die API.
+# Sie wird von Hand gepflegt -> bei jeder Änderung an Endpunkten/DTOs im
+# Backend muss sie mitgezogen werden.
+#
+# Ansehen/ausprobieren: Inhalt in https://editor.swagger.io einfügen.
+openapi: 3.1.0
+
+info:
+  title: KÖLN ESSENMEILE – Blog API
+  version: 1.0.0
+  description: |
+    REST-API des Blogs. Verwaltet Posts (Titel, Beschreibung, Inhalt) samt
+    optionalem Titelbild. Alle Antworten sind JSON, außer die Bildauslieferung
+    unter `/uploads/**` (liefert die Binärdatei).
+
+servers:
+  - url: http://localhost:8080
+    description: Lokale Entwicklung (XAMPP-Frontend spricht dieses Backend an)
+  # Für eine andere Maschine hier den passenden Server ergänzen, z. B.:
+  # - url: https://blog.example.com
+
+tags:
+  - name: Posts
+    description: Anlegen, Lesen, Ändern und Löschen von Blog-Posts
+  - name: Uploads
+    description: Auslieferung hochgeladener Bilder
+
+paths:
+  /api/posts:
+    get:
+      tags: [Posts]
+      operationId: listPosts
+      summary: Alle Posts auflisten (optional mit Suche)
+      description: |
+        Liefert alle Posts, absteigend nach Erstelldatum sortiert.
+        Mit `search` wird eine Wortsuche über Titel, Beschreibung und Inhalt
+        ausgeführt: Der Begriff wird in Wörter zerlegt, jedes Wort muss
+        vorkommen (UND-Verknüpfung), Reihenfolge egal, Groß-/Kleinschreibung
+        wird ignoriert.
+      parameters:
+        - name: search
+          in: query
+          required: false
+          description: Suchbegriff (ein oder mehrere Wörter, durch Leerzeichen getrennt).
+          schema:
+            type: string
+          example: halve hahn
+      responses:
+        '200':
+          description: Liste der Posts (ggf. leer).
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/PostResponse'
+    post:
+      tags: [Posts]
+      operationId: createPost
+      summary: Neuen Post anlegen
+      description: |
+        Legt einen Post an. JSON-Body; ein optionales Titelbild wird als
+        Data-URL (Base64) im Feld `image` mitgeschickt.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PostRequest'
+      responses:
+        '201':
+          description: Post angelegt.
+          headers:
+            Location:
+              description: URL des neu angelegten Posts.
+              schema:
+                type: string
+              example: /api/posts/42
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PostResponse'
+        '400':
+          $ref: '#/components/responses/ValidationError'
+        '413':
+          $ref: '#/components/responses/ImageTooLarge'
+        '415':
+          $ref: '#/components/responses/InvalidImageFormat'
+
+  /api/posts/{id}:
+    parameters:
+      - $ref: '#/components/parameters/PostId'
+    get:
+      tags: [Posts]
+      operationId: getPost
+      summary: Einen Post abrufen
+      responses:
+        '200':
+          description: Der angeforderte Post.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PostResponse'
+        '404':
+          $ref: '#/components/responses/NotFound'
+    put:
+      tags: [Posts]
+      operationId: updatePost
+      summary: Einen Post ändern
+      description: |
+        Aktualisiert Titel/Beschreibung/Inhalt. Wird ein neues Bild (als Data-URL
+        im Feld `image`) mitgeschickt, ersetzt es das bisherige Titelbild. Ohne
+        Bild bleibt das vorhandene erhalten. JSON-Body.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PostRequest'
+      responses:
+        '200':
+          description: Post aktualisiert.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PostResponse'
+        '400':
+          $ref: '#/components/responses/ValidationError'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '413':
+          $ref: '#/components/responses/ImageTooLarge'
+        '415':
+          $ref: '#/components/responses/InvalidImageFormat'
+    delete:
+      tags: [Posts]
+      operationId: deletePost
+      summary: Einen Post löschen
+      description: Löscht den Post und die zugehörigen Bild-Datenbankeinträge.
+      responses:
+        '204':
+          description: Erfolgreich gelöscht (kein Inhalt).
+        '404':
+          $ref: '#/components/responses/NotFound'
+
+  /uploads/{filename}:
+    get:
+      tags: [Uploads]
+      operationId: getUpload
+      summary: Ein hochgeladenes Bild abrufen
+      description: |
+        Liefert die Bilddatei. Der relative Pfad aus `coverImage`
+        (z. B. `uploads/xyz.jpg`) ergibt zusammen mit der Server-Basis-URL
+        die volle Bild-URL.
+      parameters:
+        - name: filename
+          in: path
+          required: true
+          description: Dateiname des Bildes (Teil hinter `uploads/`).
+          schema:
+            type: string
+          example: img_ab12cd34.jpg
+      responses:
+        '200':
+          description: Die Bilddatei.
+          content:
+            image/jpeg: {}
+            image/png: {}
+            image/gif: {}
+            image/webp: {}
+        '404':
+          description: Bild nicht gefunden.
+
+components:
+  parameters:
+    PostId:
+      name: id
+      in: path
+      required: true
+      description: ID des Posts.
+      schema:
+        type: integer
+        format: int32
+      example: 27
+
+  schemas:
+    PostResponse:
+      type: object
+      description: Ein Post, wie ihn die API zurückgibt.
+      required: [id, title, description, content, createdAt, updatedAt, coverImage]
+      properties:
+        id:
+          type: integer
+          format: int32
+          example: 27
+        title:
+          type: string
+          example: Halve Hahn – der Klassiker
+        description:
+          type: string
+          example: Ein Kölner Klassiker – Röggelchen mit Gouda.
+        content:
+          type: string
+          example: Ausführlicher Text zum Gericht …
+        createdAt:
+          type: string
+          format: date-time
+          description: |
+            Erstellzeitpunkt als lokale Zeit ohne Zeitzonen-Offset
+            (z. B. `2026-06-13T13:45:18`). Kann Sekundenbruchteile enthalten.
+          example: '2026-06-13T13:45:18'
+        updatedAt:
+          type: string
+          format: date-time
+          description: Zeitpunkt der letzten Änderung (gleiche Form wie createdAt).
+          example: '2026-06-13T13:45:18'
+        coverImage:
+          type: [string, 'null']
+          description: |
+            Relativer Pfad zum Titelbild (z. B. `uploads/xyz.jpg`) oder `null`,
+            wenn kein Bild vorhanden ist. Für die volle URL die Server-Basis
+            davorsetzen.
+          example: uploads/img_ab12cd34.jpg
+
+    PostRequest:
+      type: object
+      description: |
+        Felder zum Anlegen/Ändern eines Posts (JSON-Body).
+      required: [title]
+      properties:
+        title:
+          type: string
+          minLength: 1
+          maxLength: 32
+          description: Pflichtfeld, darf nicht leer sein.
+          example: Halve Hahn
+        description:
+          type: string
+          maxLength: 180
+          example: Ein Kölner Klassiker.
+        content:
+          type: string
+          maxLength: 2000
+          example: Ausführlicher Text …
+        image:
+          type: string
+          description: |
+            Optionales Titelbild als Data-URL mit Base64-Inhalt
+            (z. B. `data:image/png;base64,iVBORw0K...`). Erlaubte Formate:
+            jpg, jpeg, png, gif, webp. Maximal 5 MB (dekodiert).
+          example: data:image/png;base64,iVBORw0KGgo=
+
+    ApiError:
+      type: object
+      description: Einheitliches Fehlerobjekt.
+      required: [error]
+      properties:
+        error:
+          type: string
+          description: Menschable Fehlermeldung (Deutsch).
+          example: Post nicht gefunden.
+
+  responses:
+    NotFound:
+      description: Der Post existiert nicht.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ApiError'
+          example:
+            error: Post nicht gefunden.
+
+    ValidationError:
+      description: Ungültige Eingabe (Bean Validation).
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ApiError'
+          examples:
+            titelFehlt:
+              summary: Titel leer
+              value:
+                error: Ein Titel ist erforderlich.
+            titelZuLang:
+              summary: Titel > 32 Zeichen
+              value:
+                error: Der Titel darf maximal 32 Zeichen lang sein.
+            beschreibungZuLang:
+              summary: Beschreibung > 180 Zeichen
+              value:
+                error: Die Beschreibung darf maximal 180 Zeichen lang sein.
+            inhaltZuLang:
+              summary: Inhalt > 2000 Zeichen
+              value:
+                error: Der Inhalt darf maximal 2000 Zeichen lang sein.
+
+    ImageTooLarge:
+      description: Das Bild überschreitet 5 MB.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ApiError'
+          example:
+            error: Die Datei ist zu groß. Maximal 5 MB sind erlaubt.
+
+    InvalidImageFormat:
+      description: Ungültiges Bildformat.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ApiError'
+          example:
+            error: 'Ungültiges Bildformat. Erlaubt: jpg, jpeg, png, gif, webp.'

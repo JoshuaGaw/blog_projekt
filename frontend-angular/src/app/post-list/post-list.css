@@ -1,0 +1,26 @@
+.toolbar {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+  padding: 16px 0;
+}
+
+.toolbar .search-input {
+  flex: 1;
+}
+
+.new-post-card {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  padding: 20px;
+  margin-bottom: 24px;
+  border-radius: 12px;
+  background: rgba(0, 0, 0, 0.03);
+}
+
+.form-actions {
+  display: flex;
+  gap: 12px;
+  justify-content: flex-end;
+}

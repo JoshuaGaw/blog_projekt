@@ -1,0 +1,50 @@
+<main class="main-content">
+
+  <div class="toolbar">
+    <input #searchBox type="text" class="search-input" placeholder="Suchen…"
+           (input)="onSearch(searchBox.value)">
+    <button class="button" (click)="showForm.set(!showForm())">＋ Neuer Post</button>
+  </div>
+
+  @if (showForm()) {
+    <div class="new-post-card">
+      <div class="new-post-header-title">Neuer Post</div>
+      <input class="input-field" [(ngModel)]="title" maxlength="32" placeholder="Titel (max. 32 Zeichen)">
+      <textarea class="input-field" [(ngModel)]="description" maxlength="180" placeholder="Beschreibung (max. 180 Zeichen)"></textarea>
+      <textarea class="input-field" [(ngModel)]="content" maxlength="2000" placeholder="Inhalt (max. 2000 Zeichen)"></textarea>
+      <input type="file" accept="image/*" (change)="onFileSelected($event)">
+      @if (error()) {
+        <div class="image-error">{{ error() }}</div>
+      }
+      <div class="form-actions">
+        <button class="button" (click)="resetForm()">Abbrechen</button>
+        <button class="button" (click)="save()">Speichern</button>
+      </div>
+    </div>
+  }
+
+  @if (posts().length > 0) {
+    <div id="hero-container">
+      <div class="hero-card" (click)="open(posts()[0].id)">
+        <div class="hero-body">
+          <h2>{{ posts()[0].title }}</h2>
+          <p>{{ posts()[0].description }}</p>
+        </div>
+      </div>
+    </div>
+
+    <div id="posts-container">
+      @for (post of posts().slice(1); track post.id) {
+        <div class="card1" (click)="open(post.id)">
+          <div class="card-body">
+            <h2>{{ post.title }}</h2>
+            <p>{{ post.description }}</p>
+          </div>
+        </div>
+      }
+    </div>
+  } @else {
+    <p class="search-no-results">Noch keine Posts.</p>
+  }
+
+</main>

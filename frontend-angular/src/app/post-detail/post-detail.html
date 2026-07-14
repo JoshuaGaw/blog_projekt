@@ -1,0 +1,32 @@
+<script src="post-detail.ts"></script>@if (notFound()) {
+  <main class="detail-main-container">
+    <div class="detail-container">
+      <h1 class="detail-title">Beitrag nicht gefunden.</h1>
+      <a class="button" routerLink="/">Zurück</a>
+    </div>
+  </main>
+} @else if (post(); as p) {
+  <main class="detail-main-container">
+    <div class="detail-container">
+
+      @if (coverUrl(p.coverImage); as url) {
+        <div class="detail-hero-frame">
+          <img class="detail-hero-image" [src]="url" [alt]="p.title">
+        </div>
+      }
+
+      <h1 class="detail-title">{{ p.title }}</h1>
+
+      <div class="detail-meta">
+        {{ wasEdited(p) ? 'Zuletzt bearbeitet am ' : 'Veröffentlicht am ' }}{{ formatDate(wasEdited(p) ? p.updatedAt : p.createdAt) }}
+      </div>
+
+      <p class="detail-content">{{ p.content }}</p>
+
+      <div class="detail-card-footer">
+        <a class="button" routerLink="/">Zurück</a>
+        <button class="button" (click)="remove()">Löschen</button>
+      </div>
+    </div>
+  </main>
+}
